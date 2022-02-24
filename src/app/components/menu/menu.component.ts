@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class MenuComponent implements OnInit {
   // public menuItems: Observable<Menu[]>
-  public menuItems:Menu;
+  public menuItems: Menu;
 
   constructor(private menuService: MenuService) {
   }
@@ -25,7 +25,7 @@ export class MenuComponent implements OnInit {
     .subscribe((res: ApiResponse<Menu>) => {
       if(!res.hasErrors()) {
         this.menuItems = res.data;
-        console.log(this.menuItems);
+        // console.log(this.menuItems);
         console.log(res)
       }
     })
