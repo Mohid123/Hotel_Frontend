@@ -19,4 +19,8 @@ export class MenuService extends BaseApiService<menu>{
   getAllItems(): Observable<ApiResponse<menu>> {
     return this.get(`menu/getAllMenuItems`)
   }
+
+  createNewItem(menu: Menu): Observable<ApiResponse<menu>> {
+    return this.post(`menu`, menu);
+  }
 }

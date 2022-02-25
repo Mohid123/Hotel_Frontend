@@ -4,7 +4,7 @@ import { MenuComponent } from './components/menu/menu.component';
 
 const routes: Routes = [
   {
-    path: 'menu',
+    path: '',
     component: MenuComponent
   }
 ];

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from './interceptors/interceptor';
-
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,7 +15,9 @@ import { Interceptor } from './interceptors/interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     {

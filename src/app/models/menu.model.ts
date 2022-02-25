@@ -5,4 +5,8 @@ export class Menu {
   description?: string;
   category?: string;
   servingSize?: string;
+  images?: [{
+    captureFileURL?: string;
+    blurHash?: string;
+  }]
 }

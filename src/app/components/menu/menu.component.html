@@ -1,3 +1,56 @@
-<ng-container>
-
+<h4 class="p-4 mb-2 text-center text-teal-200 bg-gray-500">Today's Menu</h4>
+<ng-container *ngFor="let menu of menu$ | async; index as i">
+  <div class="flex flex-col flex-1">
+    <span class="font-mono text-center text-slate-800">{{menu.itemName}}</span>
+  </div>
 </ng-container>
+
+
+<div class="w-full max-w-sm lg:max-w-full lg:flex">
+  <div class="flex-none h-48 overflow-hidden text-center bg-cover rounded-t lg:h-auto lg:w-48 lg:rounded-t-none lg:rounded-l">
+    <ng-container *ngFor="let multiple of multiples">
+      <img [src]="multiple">
+    </ng-container>
+  </div>
+  <!-- <div class="flex flex-col justify-between p-4 leading-normal bg-white border-b border-l border-r border-gray-400 rounded-b lg:border-l-0 lg:border-t lg:border-gray-400 lg:rounded-b-none lg:rounded-r">
+    <div class="mb-8">
+      <p class="flex items-center text-sm text-gray-600">
+        <svg class="w-3 h-3 mr-2 text-gray-500 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
+        </svg>
+        Members only
+      </p>
+      <div class="mb-2 text-xl font-bold text-gray-900">Can coffee make you a better developer?</div>
+      <p class="text-base text-gray-700">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
+    </div>
+    <div class="flex items-center">
+      <img class="w-10 h-10 mr-4 rounded-full" src="/img/jonathan.jpg" alt="Avatar of Jonathan Reinink">
+      <div class="text-sm">
+        <p class="leading-none text-gray-900">Jonathan Reinink</p>
+        <p class="text-gray-600">Aug 18</p>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<form class="flex flex-col form" [formGroup]="menuForm" (ngSubmit)="createMenu()">
+    <div class="flex flex-col w-auto p-0 lg:p-10">
+      <label class="mb-3 ml-4">Title</label>
+      <input type="text" class="mb-5 form-control" formControlName="itemName" name="itemName" placeholder="Enter itemName">
+      <!-- <input class="form-control" formControlName="price" name="price" class="mb-3">
+      <input class="form-control" formControlName="category" name="category" class="mb-3">
+      <input class="form-control" formControlName="description" name="description" class="mb-3">
+      <input class="form-control" formControlName="servingSize" name="servingSize" class="mb-3">
+      <input class="form-control" formControlName="servingSize" name="servingSize" class="mb-3"> -->
+      <input type="file" accept=".png, .jpg, .jpeg" (change)="onSelectFile($event)" class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700" multiple>
+    </div>
+  <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700" type="submit">
+    Submit
+  </button>
+</form>
+
+
+
+
+
+
