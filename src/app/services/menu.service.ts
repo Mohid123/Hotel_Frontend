@@ -23,4 +23,16 @@ export class MenuService extends BaseApiService<menu>{
   createNewItem(menu: Menu): Observable<ApiResponse<menu>> {
     return this.post(`menu`, menu);
   }
+
+  updateMenu(id: string, menu: Menu): Observable<ApiResponse<menu>> {
+    return this.put(`menu/updateMenuItem/${id}`, menu);
+  }
+
+  getMenuItem(id: string): Observable<ApiResponse<menu>> {
+    return this.get(`menu/getMenuItem/${id}`);
+  }
+
+  deleteMenuItem(id: string): Observable<ApiResponse<menu>> {
+    return this.delete(`menu/deleteMenuItem/${id}`);
+  }
 }
