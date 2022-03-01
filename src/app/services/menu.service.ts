@@ -16,8 +16,10 @@ export class MenuService extends BaseApiService<menu>{
     super(http)
   }
 
-  getAllItems(): Observable<ApiResponse<menu>> {
-    return this.get(`menu/getAllMenuItems`)
+  getAllItems(offset:any, limit:any): Observable<ApiResponse<menu>> {
+    limit = parseInt(limit) < 1 ? 12 : limit;
+    offset = parseInt(offset) < 0 ? 0 : offset;
+    return this.get(`menu/getAllMenuItems?offset=${offset}&limit=${limit}`)
   }
 
   createNewItem(menu: Menu): Observable<ApiResponse<menu>> {

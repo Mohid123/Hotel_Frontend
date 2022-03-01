@@ -2,11 +2,13 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Menu } from 'src/app/models/menu.model';
 import { ApiResponse } from 'src/app/models/response.model';
 import { MenuService } from 'src/app/services/menu.service';
-import { BehaviorSubject, exhaustMap, from, fromEvent, Observable } from 'rxjs';
+import { BehaviorSubject, exhaustMap, find, from, fromEvent, Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MediaUploadService } from './../../services/media-upload.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { UploadMedia } from './../../models/media.model';
+import { ModalComponent } from './../modal/modal.component';
 
 @Component({
   selector: 'app-menu',
@@ -15,8 +17,11 @@ import { UploadMedia } from './../../models/media.model';
 })
 export class MenuComponent implements OnInit, AfterViewInit {
   @ViewChild('saveMenuButton') saveMenuButton: ElementRef
-  public menuItems: Menu;
+  public menuItems: any;
   public id: string;
+  public newId: string;
+  public limit: number = 12;
+  public offset: number = 0;
   public menu$: Observable<any[]>;
   menuForm: FormGroup;
   multiples: any[] = [];
@@ -26,6 +31,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
   menuSubject = new BehaviorSubject<any[]>([]);
   menuObserve: Observable<any[]> = this.menuSubject.asObservable();
   file: any;
+  Sizes: string[] = ["Full", "Half", "1 per person"];
+  category: string[] = ["Mutton", "Chicken", "Beef", "Rice", "Beverages", "Dessert", "BBQ", "Tandoor"];
   defaultMenu: Menu = {
     itemName: '',
     description: '',
@@ -41,24 +48,22 @@ export class MenuComponent implements OnInit, AfterViewInit {
   constructor(
     private menuService: MenuService, private fb: FormBuilder,
     private mediaService: MediaUploadService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toast: ToastrService
     ) {
       this.menuItems;
     }
 
   ngOnInit(): void {
     this.getMenu();
-    this.initMenuForm();
     this.initEditForm();
   }
 
   ngAfterViewInit() {
-    fromEvent(this.saveMenuButton.nativeElement, 'click').pipe(
-      exhaustMap(() => this.saveMenu(this.menuForm.value)),
-    ).subscribe(() => {
-      this.getMenu();
-      this.resetMenuForm();
-    })
+  }
+
+  openMain() {
+    const modalRef = this.modalService.open(ModalComponent);
   }
 
   open(openDialog:any, menu: any) {
@@ -68,6 +73,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
     this.editForm.setValue({
+      id: menu.id,
       itemName: menu.itemName,
       description: menu.description,
       category: menu.category,
@@ -86,49 +92,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
     }
   }
 
-  initMenuForm() {
-    this.menuForm = this.fb.group({
-      itemName: [
-        this.defaultMenu.itemName,
-        Validators.compose([
-          Validators.required,
-        ])
-      ],
-      price: [
-        this.defaultMenu.price,
-        Validators.compose([
-          Validators.required
-        ]),
-      ],
-      category: [
-        this.defaultMenu.category,
-        Validators.compose([
-          Validators.required
-        ]),
-      ],
-      description: [
-        this.defaultMenu.description,
-        Validators.compose([
-          Validators.required
-        ])
-      ],
-      servingSize: [
-        this.defaultMenu.servingSize,
-        Validators.compose([
-          Validators.required
-        ])
-      ],
-      images: [
-        this.defaultMenu.images,
-        Validators.compose([
-          Validators.required
-        ])
-      ]
-    })
-  }
-
   initEditForm() {
     this.editForm = this.fb.group({
+      id: [null],
       itemName: [null],
       description: [null],
       price: [null],
@@ -139,7 +105,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   getMenu() {
     let newMenu: any[] = [];
-    this.menuService.getAllItems()
+    this.menuService.getAllItems(this.offset, this.limit)
     .subscribe((res: ApiResponse<Menu>) => {
       if(!res.hasErrors()) {
         this.menuItems = res.data;
@@ -150,22 +116,13 @@ export class MenuComponent implements OnInit, AfterViewInit {
     })
   }
 
-  editMenu(menu: Menu) {
-    this.menuService.updateMenu(menu.id, menu);
-  }
-
-  updateMenu() {
-    debugger
-    const menuItems = this.menuSubject.getValue();
-    const menuIndex = menuItems.find(menu => menu.id == this.menuItems.id)
-    const newMenu = menuItems.slice(0);
-    newMenu[menuIndex] = {
-      ...menuItems[menuIndex],
-      ...this.editForm.value
-    }
-    this.menuSubject.next(newMenu);
-    this.editMenu(this.editForm.value);
-    this.getMenu();
+  editMenu() {
+    this.menuService.updateMenu(this.editForm.value.id, this.editForm.value).subscribe((res: ApiResponse<Menu>) => {
+      if(!res.hasErrors()) {
+        this.toast.success('Successfully updated menu item', 'Update Menu')
+        this.getMenu();
+      }
+    });
   }
 
   saveMenu(data: Menu) {
@@ -175,13 +132,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
   deleteMenu(menu: Menu) {
     this.menuService.deleteMenuItem(menu.id).subscribe((res: ApiResponse<Menu>) => {
       this.getMenu();
-      window.alert('Deleted');
+      this.toast.success('Menu item deletd', 'Delete Menu')
     })
-  }
-
-  resetMenuForm() {
-    this.menuForm.reset();
-    this.defaultMenu = new Menu();
   }
 
   onSelectFile(event: any) {

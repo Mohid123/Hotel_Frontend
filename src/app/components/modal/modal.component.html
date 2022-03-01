@@ -1,0 +1,55 @@
+<!-- <ng-template #mainDialog let-modal> -->
+  <div class="w-full max-w-lg">
+    <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md" [formGroup]="menuForm">
+      <div class="mb-4">
+        <label class="block mb-2 text-sm font-bold text-gray-700" for="itemName">
+          Item Name
+        </label>
+        <input class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter item name" formControlName="itemName" name="itemName">
+      </div>
+      <div class="mb-6">
+        <label class="block mb-2 text-sm font-bold text-gray-700" for="password">
+          Price
+        </label>
+        <input class="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="text" placeholder="Specify Price" formControlName="price" name="price">
+      </div>
+      <div class="mb-6">
+        <label class="block mb-2 text-sm font-bold text-gray-700" for="password">
+          Description
+        </label>
+        <textarea rows="8" class="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="text" placeholder="Describe your dish" formControlName="description" name="description"></textarea>
+      </div>
+      <div class="mb-6">
+        <label class="block mb-2 text-sm font-bold text-gray-700" for="password">
+          Category
+        </label>
+        <div class="relative">
+          <select name="category" formControlName="category" class="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline">
+            <option disabled>Select Category</option>
+            <option *ngFor="let cat of category" [ngValue]="cat">{{cat}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-6">
+        <label class="block mb-2 text-sm font-bold text-gray-700" for="password">
+          Serving Size
+        </label>
+        <div class="relative">
+          <select name="servingSize" formControlName="servingSize" class="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline">
+            <option disabled>Select Serving Size</option>
+            <option *ngFor="let serve of Sizes" [ngValue]="serve">{{serve}}</option>
+          </select>
+        </div>
+        <!-- <input class="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="text" placeholder="What is your Serving Size" formControlName="servingSize" name="servingSize"> -->
+      </div>
+      <div class="flex items-center justify-between">
+          <button #saveMenuButton class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="submit">
+          Submit
+        </button>
+      </div>
+    </form>
+    <p class="text-xs text-center text-gray-500">
+      &copy;2022 Hotel Corp. All rights reserved.
+    </p>
+  </div>
+<!-- </ng-template> -->
