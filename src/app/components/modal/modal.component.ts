@@ -29,8 +29,6 @@ export class ModalComponent implements OnInit {
   }
   public menuItems: any;
   menuForm: FormGroup;
-  menuSubject = new BehaviorSubject<any[]>([]);
-  public menu$: Observable<any[]>;
 
   constructor(private fb: FormBuilder, public activeModal: NgbActiveModal,private menuService: MenuService,private toast: ToastrService) { }
 

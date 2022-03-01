@@ -28,8 +28,6 @@ export class MenuComponent implements OnInit, AfterViewInit {
   urls: any[] = [];
   closeResult: string = '';
   editForm: FormGroup;
-  menuSubject = new BehaviorSubject<any[]>([]);
-  menuObserve: Observable<any[]> = this.menuSubject.asObservable();
   file: any;
   Sizes: string[] = ["Full", "Half", "1 per person"];
   category: string[] = ["Mutton", "Chicken", "Beef", "Rice", "Beverages", "Dessert", "BBQ", "Tandoor"];
@@ -111,7 +109,6 @@ export class MenuComponent implements OnInit, AfterViewInit {
         this.menuItems = res.data;
         newMenu.push(this.menuItems);
         this.menu$ = from(newMenu);
-        this.menuSubject.next(newMenu);
       }
     })
   }
