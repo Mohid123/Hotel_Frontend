@@ -5,7 +5,6 @@ import { NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap'
 import { exhaustMap, BehaviorSubject, Observable, fromEvent, from } from 'rxjs';
 import { MenuService } from 'src/app/services/menu.service';
 import { ToastrService } from 'ngx-toastr';
-import { ApiResponse } from 'src/app/models/response.model';
 
 @Component({
   selector: 'app-modal',
@@ -105,6 +104,5 @@ export class ModalComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-
 
 }

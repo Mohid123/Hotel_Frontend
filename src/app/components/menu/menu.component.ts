@@ -61,7 +61,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   openMain() {
-    const modalRef = this.modalService.open(ModalComponent);
+    this.modalService.open(ModalComponent);
   }
 
   open(openDialog:any, menu: any) {
