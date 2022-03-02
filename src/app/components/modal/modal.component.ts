@@ -5,6 +5,7 @@ import { NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap'
 import { exhaustMap, BehaviorSubject, Observable, fromEvent, from } from 'rxjs';
 import { MenuService } from 'src/app/services/menu.service';
 import { ToastrService } from 'ngx-toastr';
+import { ImagePostService } from './../../services/image-post.service';
 
 @Component({
   selector: 'app-modal',
@@ -28,8 +29,16 @@ export class ModalComponent implements OnInit {
   }
   public menuItems: any;
   menuForm: FormGroup;
+  multiples: any[] = [];
+  urls: any[] = [];
+  file: any;
 
-  constructor(private fb: FormBuilder, public activeModal: NgbActiveModal,private menuService: MenuService,private toast: ToastrService) { }
+  constructor(
+    private fb: FormBuilder,
+    public activeModal: NgbActiveModal,
+    private menuService: MenuService,
+    private toast: ToastrService,
+    private imageService: ImagePostService) { }
 
   ngOnInit(): void {
     this.initMenuForm();
@@ -95,6 +104,14 @@ export class ModalComponent implements OnInit {
     return this.menuService.createNewItem(data);
   }
 
+  // async saveMenu(data: Menu) {
+  //   debugger
+  //   return this.imageService.uploadImage(this.urls, data.description, data.itemName, data.price, data.servingSize, data.category)
+  //   .then((success) => {
+  //     this.toast.success('New item created', 'Add New Item');
+  //   });
+  // }
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -102,6 +119,28 @@ export class ModalComponent implements OnInit {
       return 'by clicking on a backdrop';
     } else {
       return `with: ${reason}`;
+    }
+  }
+
+  onSelectFile(event: any) {
+    this.file = event.target.files && event.target.files.length;
+    if (this.file > 0 && this.file < 5) {
+      let i: number = 0;
+      for (const singlefile of event.target.files) {
+        var reader = new FileReader();
+        reader.readAsDataURL(singlefile);
+        this.urls.push(singlefile);
+        i++;
+        reader.onload = (event) => {
+          const url = (<FileReader>event.target).result as string;
+          this.multiples.push(url);
+          if (this.multiples.length > 4) {
+            this.multiples.pop();
+            this.urls.pop();
+            window.alert('Maximum number of files reached') //temporary alert. will replace with toast
+          }
+        };
+      }
     }
   }
 

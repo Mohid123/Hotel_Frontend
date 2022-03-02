@@ -18,8 +18,8 @@ export class MediaUploadService extends BaseApiService<media> {
   }
 
 
-uploadMedia(folderName:string, file:FormData): Observable<ApiResponse<media>> {
-  return this.postMedia(`media-upload/mediaFiles/${folderName}`, file)
+uploadMedia(file:FormData): Observable<ApiResponse<media>> {
+  return this.postMedia(`media-upload/mediaFiles`, file)
   .pipe(
     take(1),
     tap((result:ApiResponse<media>) => {

@@ -1,3 +1,4 @@
-export interface UploadMedia {
-  folderName: string;
+export class UploadMedia {
+  captureFileURL?: string;
+  blurHash?: string;
 }

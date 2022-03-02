@@ -5,6 +5,24 @@
       <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
     </div>
     <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md" [formGroup]="menuForm">
+      <h5>Image goes here:</h5>
+      <div class="flex flex-wrap object-cover w-auto h-auto mt-20">
+        <ng-container *ngFor="let multiple of multiples">
+          <img [src]="multiple" class="flex-1 flex-row flex-wrap p-0.5 rounded-md w-2 h-auto object-cover">
+        </ng-container>
+      </div>
+      <div class="mb-4">
+        <label class="block mb-2 text-sm font-bold text-gray-700" for="file-input">
+          Upload Image
+        </label>
+        <input type="file" class="w-auto px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" accept="image/png, image/jpeg, image/jpg" (change)="onSelectFile($event)">
+        <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+          validation: 'required',
+          message: 'Atleast one image is required',
+          control: menuForm.controls['images']
+        }">
+      </ng-container>
+      </div>
       <div class="mb-4">
         <label class="block mb-2 text-sm font-bold text-gray-700" for="itemName">
           Item Name
