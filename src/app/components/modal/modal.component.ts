@@ -2,9 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Menu } from 'src/app/models/menu.model';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { exhaustMap, BehaviorSubject, Observable, fromEvent, from } from 'rxjs';
-import { MenuService } from 'src/app/services/menu.service';
-import { ToastrService } from 'ngx-toastr';
+import { exhaustMap, fromEvent } from 'rxjs';
 import { ImagePostService } from './../../services/image-post.service';
 
 @Component({
@@ -14,8 +12,8 @@ import { ImagePostService } from './../../services/image-post.service';
 })
 export class ModalComponent implements OnInit {
   @ViewChild('saveMenuButton') saveMenuButton: ElementRef
-  category: string[] = ["Mutton", "Chicken", "Beef", "Rice", "Beverages", "Dessert", "BBQ", "Tandoor"];
-  Sizes: string[] = ["Full", "Half", "1 per person"];
+  category: string[] = ["Mutton", "Chicken", "Beef", "Rice", "Beverages", "Dessert", "BBQ", "Tandoor", "Starters", "Soup", "Daal", "Sabzi"];
+  Sizes: string[] = ["Full", "Half", "1 per person", "6 Pieces", "8 Pieces"];
   defaultMenu: Menu = {
     itemName: '',
     description: '',
@@ -36,8 +34,6 @@ export class ModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public activeModal: NgbActiveModal,
-    private menuService: MenuService,
-    private toast: ToastrService,
     private imageService: ImagePostService) { }
 
   ngOnInit(): void {
@@ -49,7 +45,6 @@ export class ModalComponent implements OnInit {
       exhaustMap(() => this.saveMenu(this.menuForm.value)),
     ).subscribe(() => {
       this.resetMenuForm();
-      this.toast.success('New item created', 'Add New Item');
       this.activeModal.close();
     })
   }
@@ -100,17 +95,9 @@ export class ModalComponent implements OnInit {
     this.defaultMenu = new Menu();
   }
 
-  saveMenu(data: Menu) {
-    return this.menuService.createNewItem(data);
+  async saveMenu(data: Menu) {
+    return await this.imageService.uploadImage(this.urls, data.description, data.itemName, data.price, data.servingSize, data.category)
   }
-
-  // async saveMenu(data: Menu) {
-  //   debugger
-  //   return this.imageService.uploadImage(this.urls, data.description, data.itemName, data.price, data.servingSize, data.category)
-  //   .then((success) => {
-  //     this.toast.success('New item created', 'Add New Item');
-  //   });
-  // }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -142,6 +129,14 @@ export class ModalComponent implements OnInit {
         };
       }
     }
+  }
+
+  numberOnly(event:any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      return false;
+    }
+    return true;
   }
 
 }

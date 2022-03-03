@@ -2,12 +2,10 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Menu } from 'src/app/models/menu.model';
 import { ApiResponse } from 'src/app/models/response.model';
 import { MenuService } from 'src/app/services/menu.service';
-import { BehaviorSubject, exhaustMap, find, from, fromEvent, Observable } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MediaUploadService } from './../../services/media-upload.service';
+import { from, Observable } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { UploadMedia } from './../../models/media.model';
 import { ModalComponent } from './../modal/modal.component';
 
 @Component({
@@ -29,23 +27,12 @@ export class MenuComponent implements OnInit, AfterViewInit {
   closeResult: string = '';
   editForm: FormGroup;
   file: any;
-  Sizes: string[] = ["Full", "Half", "1 per person"];
-  category: string[] = ["Mutton", "Chicken", "Beef", "Rice", "Beverages", "Dessert", "BBQ", "Tandoor"];
-  defaultMenu: Menu = {
-    itemName: '',
-    description: '',
-    price: '',
-    category: '',
-    servingSize: '',
-    images: [{
-      captureFileURL: '',
-      blurHash: ''
-    }]
-  }
+  Sizes: string[] = ["Full", "Half", "1 per person", "6 Pieces", "8 Pieces"];
+  category: string[] = ["Mutton", "Chicken", "Beef", "Rice", "Beverages", "Dessert", "BBQ", "Tandoor", "Starters", "Soup", "Daal", "Sabzi"];
 
   constructor(
-    private menuService: MenuService, private fb: FormBuilder,
-    private mediaService: MediaUploadService,
+    private menuService: MenuService,
+    private fb: FormBuilder,
     private modalService: NgbModal,
     private toast: ToastrService
     ) {

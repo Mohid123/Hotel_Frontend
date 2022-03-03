@@ -11,11 +11,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { ModalComponent } from './components/modal/modal.component';
+import { NumbersOnlyDirective } from './directives/numbers-only.directive';
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
-    ModalComponent
+    ModalComponent,
+    NumbersOnlyDirective
   ],
   imports: [
     BrowserModule,
