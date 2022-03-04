@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MenuComponent } from './components/menu/menu.component';
+
 
 const routes: Routes = [
-  {
-    path: '',
-    component: MenuComponent
-  }
+  { path: 'menu', loadChildren: () => import('./modules/menu/menu.module').then(m => m.MenuModule) }
 ];
 
 @NgModule({

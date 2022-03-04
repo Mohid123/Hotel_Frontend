@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseApiService } from './base-api.service';
 import { HttpClient } from '@angular/common/http';
 import { Menu } from '../models/menu.model';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ApiResponse } from '../models/response.model';
 
 type menu = Menu
@@ -11,6 +11,8 @@ type menu = Menu
   providedIn: 'root'
 })
 export class MenuService extends BaseApiService<menu>{
+  getAllItems$: BehaviorSubject<[]> = new BehaviorSubject([]);
+  getAll: Observable<[]> = this.getAllItems$.asObservable();
 
   constructor(protected override http: HttpClient) {
     super(http)

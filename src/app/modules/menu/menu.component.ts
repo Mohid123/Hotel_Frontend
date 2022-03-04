@@ -2,11 +2,11 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Menu } from 'src/app/models/menu.model';
 import { ApiResponse } from 'src/app/models/response.model';
 import { MenuService } from 'src/app/services/menu.service';
-import { from, Observable } from 'rxjs';
+import { from, Observable, BehaviorSubject, debounceTime } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { ModalComponent } from './../modal/modal.component';
+import { ModalComponent } from '../components/modal/modal.component';
 
 @Component({
   selector: 'app-menu',
@@ -14,8 +14,14 @@ import { ModalComponent } from './../modal/modal.component';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit, AfterViewInit {
-  @ViewChild('saveMenuButton') saveMenuButton: ElementRef
   public menuItems: any;
+  public newItems: any;
+  empty: any[] = [];
+  empty2: any[] = [];
+  menuItems$: BehaviorSubject<any[]> = new BehaviorSubject(this.empty);
+  newItems$: BehaviorSubject<any[]> = new BehaviorSubject(this.empty2);
+  finished: boolean;
+  menuObs: Observable<any[]>;
   public id: string;
   public newId: string;
   public limit: number = 12;
@@ -28,7 +34,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   editForm: FormGroup;
   file: any;
   Sizes: string[] = ["Full", "Half", "1 per person", "6 Pieces", "8 Pieces"];
-  category: string[] = ["Mutton", "Chicken", "Beef", "Rice", "Beverages", "Dessert", "BBQ", "Tandoor", "Starters", "Soup", "Daal", "Sabzi"];
+  category: string[] = ["Mutton", "Chicken", "Beef", "Rice", "Beverages", "Dessert", "BBQ", "Tandoor", "Starters", "Soup", "Daal", "Sabzi", "Fast Food"];
 
   constructor(
     private menuService: MenuService,
@@ -40,11 +46,12 @@ export class MenuComponent implements OnInit, AfterViewInit {
     }
 
   ngOnInit(): void {
-    this.getMenu();
+    this.getMenu(this.offset, this.limit);
     this.initEditForm();
   }
 
   ngAfterViewInit() {
+    this.getNextItems();
   }
 
   openMain() {
@@ -88,23 +95,55 @@ export class MenuComponent implements OnInit, AfterViewInit {
     })
   }
 
-  getMenu() {
+  getMenu(offset: number, limit: number) {
     let newMenu: any[] = [];
-    this.menuService.getAllItems(this.offset, this.limit)
+    this.menuService.getAllItems(offset, limit)
     .subscribe((res: ApiResponse<Menu>) => {
       if(!res.hasErrors()) {
         this.menuItems = res.data;
+        this.menuItems$.next(this.menuItems);
         newMenu.push(this.menuItems);
         this.menu$ = from(newMenu);
       }
     })
   }
 
+  getNextItems() {
+    this.menuService.getAllItems(12, 6)
+    .subscribe((res: ApiResponse<Menu>) => {
+      if(!res.hasErrors()) {
+        this.newItems = res.data;
+        this.newItems$.next(this.newItems);
+      }
+    })
+  }
+
+  onScrollDown() {
+    let final: any[] = [];
+    const currentArray = this.menuItems$.getValue();
+    const updatedArray = this.newItems$.getValue();
+    const finalArray = currentArray.concat(updatedArray)
+    final.push(finalArray)
+    this.menu$ = from(final);
+    // this.menuService.getAllItems(++this.offset, this.limit)
+    // .subscribe((res: ApiResponse<Menu>) => {
+    //   debugger
+    //   if(!res.hasErrors()) {
+    //     debugger
+    //     this.menuItems = res.data;
+    //     this.menuItems$.next(this.newItems);
+    //     final.push(...this.menuItems);
+
+    //     this.menu$ = from(final)
+    //   }
+    // })
+  }
+
   editMenu() {
     this.menuService.updateMenu(this.editForm.value.id, this.editForm.value).subscribe((res: ApiResponse<Menu>) => {
       if(!res.hasErrors()) {
         this.toast.success('Successfully updated menu item', 'Update Menu')
-        this.getMenu();
+        this.getMenu(this.offset, this.limit);
       }
     });
   }
@@ -115,31 +154,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   deleteMenu(menu: Menu) {
     this.menuService.deleteMenuItem(menu.id).subscribe((res: ApiResponse<Menu>) => {
-      this.getMenu();
+      this.getMenu(this.offset, this.limit);
       this.toast.success('Menu item deletd', 'Delete Menu')
     })
   }
-
-  onSelectFile(event: any) {
-    this.file = event.target.files && event.target.files.length;
-    if (this.file > 0 && this.file < 5) {
-      let i: number = 0;
-      for (const singlefile of event.target.files) {
-        var reader = new FileReader();
-        reader.readAsDataURL(singlefile);
-        this.urls.push(singlefile);
-        i++;
-        reader.onload = (event) => {
-          const url = (<FileReader>event.target).result as string;
-          this.multiples.push(url);
-          if (this.multiples.length > 4) {
-            this.multiples.pop();
-            this.urls.pop();
-            window.alert('Maximum number of files reached') //temporary alert. will replace with toast
-          }
-        };
-      }
-    }
-  }
-
 }

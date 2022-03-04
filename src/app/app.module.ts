@@ -3,30 +3,24 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MenuComponent } from './components/menu/menu.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from './interceptors/interceptor';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { ModalComponent } from './components/modal/modal.component';
-import { NumbersOnlyDirective } from './directives/numbers-only.directive';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
-    AppComponent,
-    MenuComponent,
-    ModalComponent,
-    NumbersOnlyDirective
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule,
-    FormsModule,
     NgbModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule,
     ToastrModule.forRoot({ positionClass: 'toast-bottom-right' })
   ],
   providers: [
