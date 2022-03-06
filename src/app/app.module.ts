@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,9 +9,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { TestingComponent } from './modules/components/testing/testing.component';
+import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TestingComponent,
+    CustomModalComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +34,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
       multi: true
     },
   ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

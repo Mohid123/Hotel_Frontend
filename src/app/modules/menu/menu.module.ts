@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -8,7 +8,7 @@ import { ModalComponent } from '../components/modal/modal.component';
 import { NumbersOnlyDirective } from '../../directives/numbers-only.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSpinnerModule } from "ngx-spinner";
-import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
+// import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
 
 
 
@@ -16,7 +16,7 @@ import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-moda
   declarations: [
     MenuComponent,
     ModalComponent,
-    CustomModalComponent,
+    // CustomModalComponent,
     NumbersOnlyDirective
   ],
   imports: [
@@ -27,6 +27,6 @@ import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-moda
     NgxSpinnerModule,
     MenuRoutingModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class MenuModule { }
