@@ -8,7 +8,6 @@ import { ModalComponent } from '../components/modal/modal.component';
 import { NumbersOnlyDirective } from '../../directives/numbers-only.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSpinnerModule } from "ngx-spinner";
-// import { TestingComponent } from '../components/testing/testing.component';
 import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
 
 
@@ -17,7 +16,6 @@ import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-moda
   declarations: [
     MenuComponent,
     ModalComponent,
-    // TestingComponent
     CustomModalComponent,
     NumbersOnlyDirective
   ],

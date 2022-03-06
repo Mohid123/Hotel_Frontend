@@ -6,8 +6,6 @@ import { from, Observable, BehaviorSubject, debounceTime, fromEvent } from 'rxjs
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { ModalComponent } from '../components/modal/modal.component';
-import { TestingComponent } from '../components/testing/testing.component';
 import { ModalConfig } from 'src/app/models/modal.config';
 import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
 
