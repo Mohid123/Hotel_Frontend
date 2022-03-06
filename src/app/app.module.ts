@@ -10,12 +10,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TestingComponent } from './modules/components/testing/testing.component';
-import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
+// import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
     TestingComponent,
-    CustomModalComponent
+    // CustomModalComponent
   ],
   imports: [
     BrowserModule,

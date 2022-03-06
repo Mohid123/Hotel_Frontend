@@ -2,11 +2,14 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Menu } from 'src/app/models/menu.model';
 import { ApiResponse } from 'src/app/models/response.model';
 import { MenuService } from 'src/app/services/menu.service';
-import { from, Observable, BehaviorSubject, debounceTime } from 'rxjs';
+import { from, Observable, BehaviorSubject, debounceTime, fromEvent } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ModalComponent } from '../components/modal/modal.component';
+import { TestingComponent } from '../components/testing/testing.component';
+import { ModalConfig } from 'src/app/models/modal.config';
+import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
 
 @Component({
   selector: 'app-menu',
@@ -14,6 +17,18 @@ import { ModalComponent } from '../components/modal/modal.component';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit, AfterViewInit {
+  public modalConfig: ModalConfig = {
+    modalTitle: "Title",
+    onDismiss: () => {
+      return true
+    },
+    dismissButtonLabel: "Dismiss",
+    onClose: () => {
+      return true
+    },
+    closeButtonLabel: "Close"
+  }
+  @ViewChild('modal') private modal: CustomModalComponent
   public menuItems: any;
   public newItems: any;
   empty: any[] = [];
@@ -54,9 +69,20 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.getNextItems();
   }
 
-  openMain() {
-    this.modalService.open(ModalComponent);
+  async openModal(menu: any) {
+    return await this.modal.open(
+      this.editForm.setValue({
+        id: menu.id,
+        itemName: menu.itemName,
+        description: menu.description,
+        category: menu.category,
+        price: menu.price,
+        servingSize: menu.servingSize
+      })
+    );
   }
+
+
 
   open(openDialog:any, menu: any) {
     this.modalService.open(openDialog, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {

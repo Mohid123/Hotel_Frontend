@@ -1,7 +1,58 @@
 <div class="flex flex-row p-4 mb-3 font-semibold text-white bg-slate-900">
-  <button (click)="openMain()">+ Add Item</button>
+  <!-- <button (click)="openModal(menu)">+ Add Item</button> -->
   <h4 class="flex-1 text-center w-80">My Restaurant</h4>
 </div>
+
+<app-custom-modal #modal [modalConfig]="modalConfig">
+    <div class="w-full max-w-lg">
+      <form class="px-8 pt-6 pb-8 mb-4 text-white rounded shadow-md bg-slate-800" [formGroup]="editForm">
+        <div class="mb-4">
+          <label class="block mb-2 text-sm font-bold text-white" for="itemName">
+            Item Name
+          </label>
+          <input class="w-full px-3 py-2 leading-tight text-gray-200 border rounded shadow appearance-none bg-slate-600 focus:text-white focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter item name" formControlName="itemName" name="itemName">
+        </div>
+        <div class="mb-6">
+          <label class="block mb-2 text-sm font-bold text-white" for="password">
+            Price
+          </label>
+          <input appNumbersOnly class="w-full px-3 py-2 mb-3 leading-tight text-gray-200 border rounded shadow appearance-none bg-slate-600 focus:text-white focus:outline-none focus:shadow-outline" type="text" placeholder="Specify Price" formControlName="price" name="price">
+        </div>
+        <div class="mb-6">
+          <label class="block mb-2 text-sm font-bold text-white" for="password">
+            Description
+          </label>
+          <textarea rows="8" class="w-full px-3 py-2 mb-3 leading-tight text-gray-200 border rounded shadow appearance-none bg-slate-600 focus:text-white focus:outline-none focus:shadow-outline" type="text" placeholder="Describe your dish" formControlName="description" name="description"></textarea>
+        </div>
+        <div class="mb-6">
+          <label class="block mb-2 text-sm font-bold text-white" for="password">
+            Category
+          </label>
+          <div class="relative">
+            <select name="category" formControlName="category" class="w-full px-3 py-2 mb-3 leading-tight text-gray-200 border rounded shadow appearance-none bg-slate-600 focus:text-white focus:outline-none focus:shadow-outline">
+              <option disabled>Select Category</option>
+              <option *ngFor="let cat of category" [ngValue]="cat">{{cat}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-6">
+          <label class="block mb-2 text-sm font-bold text-white" for="password">
+            Serving Size
+          </label>
+          <div class="relative">
+            <select name="servingSize" formControlName="servingSize" class="w-full px-3 py-2 mb-3 leading-tight text-gray-200 border rounded shadow appearance-none bg-slate-600 focus:text-white focus:outline-none focus:shadow-outline">
+              <option disabled>Select Serving Size</option>
+              <option *ngFor="let serve of Sizes" [ngValue]="serve">{{serve}}</option>
+            </select>
+          </div>
+        </div>
+      </form>
+      <p class="text-xs text-center text-gray-500">
+        &copy;2022 Hotel Corp. All rights reserved.
+      </p>
+    </div>
+    <button type="button" class="btn btn-outline-dark" (click)="editMenu();">Save</button>
+</app-custom-modal>
 
 <div class="flex flex-row flex-wrap justify-center mb-5 align-middle">
   <img src="../../../assets/hotel.svg" class="w-20 h-20 lg:w-24 lg:h-24 invert">
@@ -24,7 +75,7 @@
         <span class="inline-block px-3 py-1 mb-2 mr-2 text-sm font-semibold text-white rounded-full bg-gradient-to-r from-pink-500 to-yellow-500">{{menu.servingSize}}</span>
       </div>
       <div class="px-6 pt-4 pb-3">
-        <button (click)="open(openDialog, menu)" class="px-4 py-2 mr-3 font-semibold text-gray-600 border border-gray-400 rounded shadow bg-slate-200 hover:bg-blue-100">
+        <button (click)="openModal(menu)" class="px-4 py-2 mr-3 font-semibold text-gray-600 border border-gray-400 rounded shadow bg-slate-200 hover:bg-blue-100">
           Edit
         </button>
         <button (click)="deleteMenu(menu)" class="px-4 py-2 font-semibold text-red-800 border border-red-400 rounded shadow bg-slate-200 hover:bg-red-100">
@@ -45,7 +96,7 @@
 <div *ngIf="finished" class="p-5 font-bold text-center text-red-500">No more data!</div> -->
 
 
-<ng-template #openDialog let-modal>
+<!-- <ng-template #openDialog let-modal>
   <div class="modal-header bg-slate-800">
     <h4 class="text-white modal-title" id="modal-basic-title">Menu update</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
@@ -102,7 +153,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="editMenu(); modal.close('Save click')">Save</button>
   </div>
-</ng-template>
+</ng-template> -->
 
 
 

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalConfig } from 'src/app/models/modal.config';
 import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
 
@@ -10,8 +10,6 @@ import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-moda
 export class TestingComponent implements OnInit {
 
   @ViewChild('modal') private modal: CustomModalComponent
-  @Output()
-  modalEvent: EventEmitter<CustomModalComponent> = new EventEmitter<CustomModalComponent>();
 
   public modalConfig: ModalConfig = {
     modalTitle: "Title",
@@ -31,7 +29,7 @@ export class TestingComponent implements OnInit {
   }
 
   async openModal() {
-    return this.modalEvent.emit(this.modal);
+    return await this.modal.open()
   }
 
 }
