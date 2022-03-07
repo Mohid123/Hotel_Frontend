@@ -6,5 +6,5 @@ export class Menu {
   description?: string | any;
   category?: string | any;
   servingSize?: string | any;
-  images?: UploadMedia[];
+  images?: UploadMedia[] | any;
 }

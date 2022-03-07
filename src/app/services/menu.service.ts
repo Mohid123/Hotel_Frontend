@@ -2,26 +2,28 @@ import { Injectable } from '@angular/core';
 import { BaseApiService } from './base-api.service';
 import { HttpClient } from '@angular/common/http';
 import { Menu } from '../models/menu.model';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, take, tap } from 'rxjs';
 import { ApiResponse } from '../models/response.model';
+import { MenuList } from './../models/menu-list.model';
 
-type menu = Menu
-
+type menu = MenuList;
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService extends BaseApiService<menu>{
-  getAllItems$: BehaviorSubject<[]> = new BehaviorSubject([]);
-  getAll: Observable<[]> = this.getAllItems$.asObservable();
+  limit: number = 6;
+  offset: number = 0;
 
   constructor(protected override http: HttpClient) {
     super(http)
   }
 
-  getAllItems(offset:any, limit:any): Observable<ApiResponse<menu>> {
-    limit = parseInt(limit) < 1 ? 12 : limit;
-    offset = parseInt(offset) < 0 ? 0 : offset;
-    return this.get(`menu/getAllMenuItems?offset=${offset}&limit=${limit}`)
+  getAllItems(page: number): Observable<ApiResponse<menu>> {
+    const param: any = {
+      offset: page ? this.limit * page : 0,
+      limit: this.limit,
+    }
+    return this.get(`menu/getAllMenuItems`, param);
   }
 
   createNewItem(menu: Menu): Observable<ApiResponse<menu>> {

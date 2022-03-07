@@ -2,12 +2,13 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Menu } from 'src/app/models/menu.model';
 import { ApiResponse } from 'src/app/models/response.model';
 import { MenuService } from 'src/app/services/menu.service';
-import { from, Observable, BehaviorSubject, debounceTime, fromEvent } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { from, Observable, BehaviorSubject, debounceTime, fromEvent, exhaustMap, tap, delay } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ModalConfig } from 'src/app/models/modal.config';
 import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
+import { ImagePostService } from './../../services/image-post.service';
+import { MenuList } from './../../models/menu-list.model';
 
 @Component({
   selector: 'app-menu',
@@ -16,7 +17,7 @@ import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-moda
 })
 export class MenuComponent implements OnInit, AfterViewInit {
   public modalConfig: ModalConfig = {
-    modalTitle: "Title",
+    modalTitle: "Edit Menu Item",
     onDismiss: () => {
       return true
     },
@@ -26,20 +27,41 @@ export class MenuComponent implements OnInit, AfterViewInit {
     },
     closeButtonLabel: "Close"
   }
-  @ViewChild('modal') private modal: CustomModalComponent
+
+  public createModalConfig: ModalConfig = {
+    modalTitle: "Add New Item",
+    onDismiss: () => {
+      return true
+    },
+    dismissButtonLabel: "Dismiss",
+    onClose: () => {
+      return true
+    },
+    closeButtonLabel: "Close"
+  }
+  @ViewChild('modal') private modal: CustomModalComponent;
+  @ViewChild('createModal') createModal: CustomModalComponent;
+  @ViewChild('saveMenuButton') saveMenuButton: ElementRef;
+  defaultMenu: Menu = {
+    itemName: '',
+    description: '',
+    price: '',
+    category: '',
+    servingSize: '',
+    images: [{
+      captureFileURL: '',
+      blurHash: ''
+    }]
+  }
+  latest: any;
+  private getAllItems$ = new BehaviorSubject<Array<any>>([]);
+  public menu$: Observable<Array<any>> = this.getAllItems$.asObservable();
+  finished: boolean;
   public menuItems: any;
   public newItems: any;
   empty: any[] = [];
   empty2: any[] = [];
-  menuItems$: BehaviorSubject<any[]> = new BehaviorSubject(this.empty);
-  newItems$: BehaviorSubject<any[]> = new BehaviorSubject(this.empty2);
-  finished: boolean;
-  menuObs: Observable<any[]>;
-  public id: string;
-  public newId: string;
-  public limit: number = 12;
-  public offset: number = 0;
-  public menu$: Observable<any[]>;
+  public page: number = 0;
   menuForm: FormGroup;
   multiples: any[] = [];
   urls: any[] = [];
@@ -52,19 +74,25 @@ export class MenuComponent implements OnInit, AfterViewInit {
   constructor(
     private menuService: MenuService,
     private fb: FormBuilder,
-    private modalService: NgbModal,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private imageService: ImagePostService
     ) {
       this.menuItems;
     }
 
   ngOnInit(): void {
-    this.getMenu(this.offset, this.limit);
+    this.getMenu(this.page);
+    this.initMenuForm();
     this.initEditForm();
   }
 
   ngAfterViewInit() {
-    this.getNextItems();
+    fromEvent(this.saveMenuButton.nativeElement, 'click').pipe(
+      exhaustMap(() => this.saveMenu(this.menuForm.value)),
+    ).subscribe(() => {
+      this.resetMenuForm();
+      this.dismiss();
+    })
   }
 
   async openModal(menu: any) {
@@ -80,32 +108,49 @@ export class MenuComponent implements OnInit, AfterViewInit {
     );
   }
 
-
-
-  open(openDialog:any, menu: any) {
-    this.modalService.open(openDialog, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-    this.editForm.setValue({
-      id: menu.id,
-      itemName: menu.itemName,
-      description: menu.description,
-      category: menu.category,
-      price: menu.price,
-      servingSize: menu.servingSize
-    });
+  async openNew() {
+    return await this.createModal.open();
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
+  initMenuForm() {
+    this.menuForm = this.fb.group({
+      itemName: [
+        this.defaultMenu.itemName,
+        Validators.compose([
+          Validators.required,
+        ])
+      ],
+      price: [
+        this.defaultMenu.price,
+        Validators.compose([
+          Validators.required
+        ]),
+      ],
+      category: [
+        this.defaultMenu.category,
+        Validators.compose([
+          Validators.required
+        ]),
+      ],
+      description: [
+        this.defaultMenu.description,
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      servingSize: [
+        this.defaultMenu.servingSize,
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      images: [
+        this.defaultMenu.images,
+        Validators.compose([
+          Validators.required
+        ])
+      ]
+    })
   }
 
   initEditForm() {
@@ -119,67 +164,76 @@ export class MenuComponent implements OnInit, AfterViewInit {
     })
   }
 
-  getMenu(offset: number, limit: number) {
-    let newMenu: any[] = [];
-    this.menuService.getAllItems(offset, limit)
-    .subscribe((res: ApiResponse<Menu>) => {
-      if(!res.hasErrors()) {
-        this.menuItems = res.data;
-        this.menuItems$.next(this.menuItems);
-        newMenu.push(this.menuItems);
-        this.menu$ = from(newMenu);
-      }
-    })
+  getMenu(page: number) {
+    this.menuService.getAllItems(page).pipe(tap((res: ApiResponse<MenuList>) => {
+      this.getAllItems$.next(res.data?.data)
+    })).subscribe();
   }
 
-  getNextItems() {
-    this.menuService.getAllItems(12, 6)
-    .subscribe((res: ApiResponse<Menu>) => {
-      if(!res.hasErrors()) {
-        this.newItems = res.data;
-        this.newItems$.next(this.newItems);
-      }
-    })
+  async dismiss() {
+    return await this.createModal.dismiss();
+  }
+
+  async dismissEdit() {
+    return await this.modal.dismiss();
+  }
+
+  async saveMenu(data: Menu) {
+    return await this.imageService.uploadImage(this.urls, data.description, data.itemName, data.price, data.servingSize, data.category)
   }
 
   onScrollDown() {
-    let final: any[] = [];
-    const currentArray = this.menuItems$.getValue();
-    const updatedArray = this.newItems$.getValue();
-    const finalArray = currentArray.concat(updatedArray)
-    final.push(finalArray)
-    this.menu$ = from(final);
-    // this.menuService.getAllItems(++this.offset, this.limit)
-    // .subscribe((res: ApiResponse<Menu>) => {
-    //   debugger
-    //   if(!res.hasErrors()) {
-    //     debugger
-    //     this.menuItems = res.data;
-    //     this.menuItems$.next(this.newItems);
-    //     final.push(...this.menuItems);
-
-    //     this.menu$ = from(final)
-    //   }
-    // })
+    this.finished = false;
+    this.menuService.getAllItems(++this.page).pipe(delay(2000), tap((res: ApiResponse<MenuList>) => {
+      const currentData = this.getAllItems$.value;
+      const latestData = [...currentData, ...res.data?.data];
+      this.getAllItems$.next(latestData)
+    })).subscribe(() => {
+      this.finished = true
+    });
   }
 
   editMenu() {
-    this.menuService.updateMenu(this.editForm.value.id, this.editForm.value).subscribe((res: ApiResponse<Menu>) => {
+    this.menuService.updateMenu(this.editForm.value.id, this.editForm.value).subscribe((res: ApiResponse<MenuList>) => {
       if(!res.hasErrors()) {
         this.toast.success('Successfully updated menu item', 'Update Menu')
-        this.getMenu(this.offset, this.limit);
+        this.getMenu(this.page);
+        this.dismissEdit()
       }
     });
   }
 
-  saveMenu(data: Menu) {
-    return this.menuService.createNewItem(data);
+  resetMenuForm() {
+    this.menuForm.reset();
+    this.defaultMenu = new Menu();
   }
 
   deleteMenu(menu: Menu) {
-    this.menuService.deleteMenuItem(menu.id).subscribe((res: ApiResponse<Menu>) => {
-      this.getMenu(this.offset, this.limit);
+    this.menuService.deleteMenuItem(menu.id).subscribe((res: ApiResponse<MenuList>) => {
+      this.getMenu(this.page);
       this.toast.success('Menu item deletd', 'Delete Menu')
     })
+  }
+
+  onSelectFile(event: any) {
+    this.file = event.target.files && event.target.files.length;
+    if (this.file > 0 && this.file < 5) {
+      let i: number = 0;
+      for (const singlefile of event.target.files) {
+        var reader = new FileReader();
+        reader.readAsDataURL(singlefile);
+        this.urls.push(singlefile);
+        i++;
+        reader.onload = (event) => {
+          const url = (<FileReader>event.target).result as string;
+          this.multiples.push(url);
+          if (this.multiples.length > 4) {
+            this.multiples.pop();
+            this.urls.pop();
+            window.alert('Maximum number of files reached') //temporary alert. will replace with toast
+          }
+        };
+      }
+    }
   }
 }
