@@ -8,13 +8,14 @@ import { NumbersOnlyDirective } from '../../directives/numbers-only.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { CustomModalComponent } from 'src/app/reusables/custom-modal/custom-modal.component';
-
+import { SkeletonLoadComponent } from 'src/app/reusables/skeleton-load/skeleton-load.component';
 
 
 @NgModule({
   declarations: [
     MenuComponent,
     CustomModalComponent,
+    SkeletonLoadComponent,
     NumbersOnlyDirective
   ],
   imports: [

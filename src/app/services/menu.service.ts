@@ -11,7 +11,7 @@ type menu = MenuList;
   providedIn: 'root'
 })
 export class MenuService extends BaseApiService<menu>{
-  limit: number = 6;
+  limit: number = 8;
   offset: number = 0;
 
   constructor(protected override http: HttpClient) {

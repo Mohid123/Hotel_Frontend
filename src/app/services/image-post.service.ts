@@ -40,7 +40,7 @@ export class ImagePostService {
         menu.images?.push(media)
       })
       return this.menuService.createNewItem(menu)
-    })).subscribe((res) => {
+    })).subscribe(() => {
       this.toast.success('New item created', 'Add New Item');
     })
   }

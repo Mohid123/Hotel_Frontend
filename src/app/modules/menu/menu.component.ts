@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Menu } from 'src/app/models/menu.model';
 import { ApiResponse } from 'src/app/models/response.model';
 import { MenuService } from 'src/app/services/menu.service';
-import { from, Observable, BehaviorSubject, debounceTime, fromEvent, exhaustMap, tap, delay } from 'rxjs';
+import { from, Observable, BehaviorSubject, debounceTime, fromEvent, exhaustMap, tap, delay, last } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ModalConfig } from 'src/app/models/modal.config';
@@ -53,14 +53,12 @@ export class MenuComponent implements OnInit, AfterViewInit {
       blurHash: ''
     }]
   }
-  latest: any;
   private getAllItems$ = new BehaviorSubject<Array<any>>([]);
   public menu$: Observable<Array<any>> = this.getAllItems$.asObservable();
-  finished: boolean;
+  public finished: boolean;
+  public showItems: boolean;
   public menuItems: any;
   public newItems: any;
-  empty: any[] = [];
-  empty2: any[] = [];
   public page: number = 0;
   menuForm: FormGroup;
   multiples: any[] = [];
@@ -165,9 +163,12 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   getMenu(page: number) {
-    this.menuService.getAllItems(page).pipe(tap((res: ApiResponse<MenuList>) => {
+    this.showItems = false;
+    this.menuService.getAllItems(page).pipe(delay(3000), tap((res: ApiResponse<MenuList>) => {
       this.getAllItems$.next(res.data?.data)
-    })).subscribe();
+    })).subscribe(() => {
+      this.showItems = true;
+    });
   }
 
   async dismiss() {
@@ -187,10 +188,12 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.menuService.getAllItems(++this.page).pipe(delay(2000), tap((res: ApiResponse<MenuList>) => {
       const currentData = this.getAllItems$.value;
       const latestData = [...currentData, ...res.data?.data];
-      this.getAllItems$.next(latestData)
-    })).subscribe(() => {
-      this.finished = true
-    });
+      this.getAllItems$.next(latestData);
+      const lastItem = latestData[latestData.length - 1]
+      if(lastItem) {
+        this.finished = true;
+      }
+    })).subscribe();
   }
 
   editMenu() {
@@ -230,7 +233,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
           if (this.multiples.length > 4) {
             this.multiples.pop();
             this.urls.pop();
-            window.alert('Maximum number of files reached') //temporary alert. will replace with toast
+            this.toast.warning('Maximum No. of files reached', 'File Limit!')
           }
         };
       }
