@@ -14,6 +14,9 @@ export class MenuService extends BaseApiService<menu>{
   limit: number = 8;
   offset: number = 0;
 
+  private getAllItems$ = new BehaviorSubject<Array<any>>([]);
+  public menu$: Observable<Array<any>> = this.getAllItems$.asObservable();
+
   constructor(protected override http: HttpClient) {
     super(http)
   }
@@ -27,7 +30,9 @@ export class MenuService extends BaseApiService<menu>{
   }
 
   createNewItem(menu: Menu): Observable<ApiResponse<menu>> {
-    return this.post(`menu`, menu);
+    return this.post(`menu`, menu).pipe(tap((res: ApiResponse<any>) => {
+
+    }));
   }
 
   updateMenu(id: string, menu: Menu): Observable<ApiResponse<menu>> {

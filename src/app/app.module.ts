@@ -9,14 +9,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ScrollTopComponent } from './reusables/scroll-top/scroll-top.component';
-// import { SkeletonLoadComponent } from './reusables/skeleton-load/skeleton-load.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ScrollTopComponent,
-    // SkeletonLoadComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

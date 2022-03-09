@@ -1,17 +1,21 @@
 <div class="flex flex-row p-4 mb-3 font-semibold text-white bg-slate-900">
+  <app-burger></app-burger>
+  <h4 class="flex-1 mt-3 ml-12 text-sm text-center lg:ml-0 md:ml-0 w-80 lg:text-xl md:text-xl">My Restaurant</h4>
   <button (click)="openNew()">+ Add Item</button>
-  <h4 class="flex-1 text-center w-80">My Restaurant</h4>
 </div>
 
+<!--header-->
 <div class="header">
   <img src="../../../assets/hotel.svg" class="w-20 h-20 lg:w-24 lg:h-24 invert">
   <h1 class="mt-4 ml-2 text-center text-white" style="font-family: 'Merriweather Sans', sans-serif;">Today's Menu</h1>
 </div>
 
+<!--Skeleton-->
 <ng-container *ngIf="showItems == false">
   <app-skeleton-load class="flex flex-row flex-wrap justify-center pb-8 align-middle"></app-skeleton-load>
 </ng-container>
 
+<!--Content-->
 <ng-container *ngIf="showItems == true">
   <div class="flex flex-row flex-wrap justify-center pb-8 align-middle">
     <ng-container *ngFor="let menu of (menu$ | async); index as i">
@@ -41,7 +45,7 @@
   </div>
 </ng-container>
 
-
+<!--infinite Scroll-->
 <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500" (scrolled)="onScrollDown()" [infiniteScrollDisabled]="finished"></div>
 <ng-container *ngIf="finished == false">
   <app-skeleton-load class="flex flex-row flex-wrap justify-center pb-8 align-middle"></app-skeleton-load>
@@ -133,7 +137,7 @@
         </div>
       </button>
       <input #imgFile
-        class="absolute block opacity-0 cursor-pointer pin-r pin-t mb-4"
+        class="absolute block mb-4 opacity-0 cursor-pointer pin-r pin-t"
         type="file"
         name=""  accept="image/png, image/gif, image/jpeg"
         (change)="onSelectFile($event)"
@@ -226,6 +230,7 @@
  </button>
 </app-custom-modal>
 
+<!--FormError-->
 <ng-template #formError let-control="control" let-message="message" let-validation="validation">
   <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">
     <div class="text-xs fv-plugins-message-container sm:text-sm">
