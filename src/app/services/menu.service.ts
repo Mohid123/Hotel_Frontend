@@ -12,7 +12,6 @@ type menu = MenuList;
 })
 export class MenuService extends BaseApiService<menu>{
   limit: number = 8;
-  offset: number = 0;
 
   private getAllItems$ = new BehaviorSubject<Array<any>>([]);
   public menu$: Observable<Array<any>> = this.getAllItems$.asObservable();
@@ -22,16 +21,21 @@ export class MenuService extends BaseApiService<menu>{
   }
 
   getAllItems(page: number): Observable<ApiResponse<menu>> {
+    page--;
     const param: any = {
       offset: page ? this.limit * page : 0,
       limit: this.limit,
     }
-    return this.get(`menu/getAllMenuItems`, param);
+    return this.get(`menu/getAllMenuItems`, param).pipe(take(1), tap((res: ApiResponse<any>) => {
+      this.getAllItems$.next(res.data?.data);
+    }));
   }
 
   createNewItem(menu: Menu): Observable<ApiResponse<menu>> {
     return this.post(`menu`, menu).pipe(tap((res: ApiResponse<any>) => {
-
+      debugger
+      const data = this.getAllItems$.getValue();
+      this.getAllItems$.next(res.data?.id)
     }));
   }
 

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Menu } from 'src/app/models/menu.model';
 import { ApiResponse } from 'src/app/models/response.model';
 import { MenuService } from 'src/app/services/menu.service';
-import { from, Observable, BehaviorSubject, debounceTime, fromEvent, exhaustMap, tap, delay, last } from 'rxjs';
+import { Observable, BehaviorSubject, fromEvent, exhaustMap, tap, delay } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ModalConfig } from 'src/app/models/modal.config';
@@ -59,7 +59,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public showItems: boolean;
   public menuItems: any;
   public newItems: any;
-  public page: number = 0;
+  public page: number;
   menuForm: FormGroup;
   multiples: any[] = [];
   urls: any[] = [];
@@ -76,6 +76,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
     private imageService: ImagePostService
     ) {
       this.menuItems;
+      this.page = 1;
     }
 
   ngOnInit(): void {
@@ -88,15 +89,17 @@ export class MenuComponent implements OnInit, AfterViewInit {
     fromEvent(this.saveMenuButton.nativeElement, 'click').pipe(
       exhaustMap(() => this.saveMenu(this.menuForm.value)),
     ).subscribe(() => {
-      this.resetMenuForm();
-      this.dismiss();
+      setTimeout(() => {
+        this.resetMenuForm();
+        this.dismiss();
+      }, 1500)
     })
   }
 
   async openModal(menu: any) {
     return await this.modal.open(
       this.editForm.setValue({
-        id: menu.id,
+        id: menu._id,
         itemName: menu.itemName,
         description: menu.description,
         category: menu.category,
@@ -197,6 +200,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   editMenu() {
+    debugger
     this.menuService.updateMenu(this.editForm.value.id, this.editForm.value).subscribe((res: ApiResponse<MenuList>) => {
       if(!res.hasErrors()) {
         this.toast.success('Successfully updated menu item', 'Update Menu')
@@ -211,10 +215,10 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.defaultMenu = new Menu();
   }
 
-  deleteMenu(menu: Menu) {
-    this.menuService.deleteMenuItem(menu.id).subscribe((res: ApiResponse<MenuList>) => {
-      this.getMenu(this.page);
-      this.toast.success('Menu item deletd', 'Delete Menu')
+  deleteMenu(menu: any) {
+    this.menuService.deleteMenuItem(menu._id).subscribe((res: ApiResponse<MenuList>) => {
+      this.toast.success('Menu item deletd', 'Delete Menu');
+      this.getMenu(this.page)
     })
   }
 

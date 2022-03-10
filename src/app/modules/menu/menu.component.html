@@ -19,7 +19,7 @@
 <ng-container *ngIf="showItems == true">
   <div class="flex flex-row flex-wrap justify-center pb-8 align-middle">
     <ng-container *ngFor="let menu of (menu$ | async); index as i">
-    <div class="mb-3 mr-5 overflow-hidden bg-gray-900 rounded shadow-lg" style="width: 400px; height: 600px;">
+    <div class="mb-3 mr-5 overflow-hidden bg-gray-900 border-b-4 rounded-md shadow-lg border-b-amber-500" style="width: 400px; height: 550px;">
       <img class="object-cover w-full h-60" [src]="menu.images[0]?.captureFileURL">
       <div class="px-6 py-4">
         <div class="mb-2 text-xl font-bold text-white">{{menu.itemName}}</div>
@@ -104,7 +104,6 @@
 </app-custom-modal>
 
 <!--Create Modal-->
-
 <app-custom-modal #createModal [modalConfig]="createModalConfig">
 <form class="w-full max-w-lg px-8 pt-6 pb-8 mb-4 text-white rounded bg-slate-800" [formGroup]="menuForm">
   <h5>Image goes here:</h5>
@@ -225,7 +224,7 @@
     &copy;2022 Hotel Corp. All rights reserved.
   </p>
 </form>
-<button [disabled]="menuForm.invalid || menuForm.errors" #saveMenuButton class="px-4 py-2 font-bold text-white bg-blue-500 rounded cursor-pointer disabled:opacity-75 focus:outline-none focus:shadow-outline" type="submit">
+<button [disabled]="menuForm.invalid || menuForm.errors || multiples.length == 0" #saveMenuButton class="px-4 py-2 font-bold text-white bg-blue-500 rounded cursor-pointer disabled:opacity-75 focus:outline-none focus:shadow-outline" type="submit">
   Submit
  </button>
 </app-custom-modal>

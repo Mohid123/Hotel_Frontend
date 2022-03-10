@@ -1,4 +1,18 @@
-<div class='image-background'>
+<app-burger></app-burger>
+<video onloadedmetadata="this.muted=true" autoplay loop preload="auto" class="absolute bottom-0 right-0 object-cover w-full h-full">
+  <source src="../../../assets/video.mp4">
+</video>
+
+<div class="fixed bottom-0 flex flex-col items-center justify-center w-full h-full text-center bg-opacity-50 bg-zinc-900">
+  <h1 class='font-extrabold text-yellow-500 myfont'>My Restaurant</h1>
+  <p class='mt-3 font-medium text-center text-yellow-500 desc'>Leading Restaurant Chain in Fine Dining</p>
+  <a routerLink="" routerLinkActive='active' class="myBtn">Order Now!
+    <img src="../../../assets/right-arrow.svg" class="myImage">
+  </a>
+</div>
+
+<!--Secondary Image Style-->
+<!-- <div class='image-background'>
   <app-burger></app-burger>
   <div class='h-full'>
     <div class='flex flex-row items-center h-full'>
@@ -8,4 +22,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

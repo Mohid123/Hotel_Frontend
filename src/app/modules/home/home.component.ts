@@ -1,5 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { BurgerComponent } from 'src/app/reusables/burger/burger.component';
+import { Component, OnInit } from '@angular/core';
 
 
 @Component({
