@@ -1,1 +1,103 @@
-<p>order-now works!</p>
+<div id="stepper1" class="bs-stepper">
+  <div class="bs-stepper-header">
+    <div class="step" data-target="#test-l-1">
+      <button class="step-trigger">
+        <span class="p-1 bg-blue-700 rounded-full">
+          <img src="../../../assets/category.svg" class="p-1 w-9 h-9 invert">
+        </span>
+        <span class="bs-stepper-label" style="color:antiquewhite">Select Category</span>
+      </button>
+    </div>
+    <div class="line" style="background-color:antiquewhite"></div>
+    <div class="step" data-target="#test-l-2">
+      <button class="step-trigger">
+        <span class="p-1 bg-blue-700 rounded-full">
+          <img src="../../../assets/menu.svg" class="p-1 w-9 h-9 invert">
+        </span>
+        <span class="bs-stepper-label" style="color:antiquewhite">Select Item</span>
+      </button>
+    </div>
+    <div class="line" style="background-color:antiquewhite"></div>
+    <div class="step" data-target="#test-l-3">
+      <button class="step-trigger">
+        <span class="p-1 bg-blue-700 rounded-full">
+          <img src="../../../assets/cash.svg" class="p-1 w-9 h-9 invert">
+        </span>
+        <span class="bs-stepper-label" style="color:antiquewhite">Confirm Payment</span>
+      </button>
+    </div>
+    <div class="line" style="background-color:antiquewhite"></div>
+    <div class="step" data-target="#test-l-4">
+      <button class="step-trigger">
+        <span class="p-1 bg-blue-700 rounded-full">
+          <img src="../../../assets/address.svg" class="p-1 w-9 h-9 invert">
+        </span>
+        <span class="bs-stepper-label" style="color:antiquewhite">Confirm Details</span>
+      </button>
+    </div>
+    <div class="line" style="background-color:antiquewhite"></div>
+    <div class="step" data-target="#test-l-5">
+      <button class="step-trigger">
+        <span class="p-1 bg-blue-700 rounded-full">
+          <img src="../../../assets/tick.svg" class="p-1 w-9 h-9 invert">
+        </span>
+        <span class="bs-stepper-label" style="color:antiquewhite">Submit</span>
+      </button>
+    </div>
+  </div>
+  <div class="bs-stepper-content">
+    <div id="test-l-1" class="content">
+      <label class="flex flex-row justify-center mt-5 mb-5 text-xl font-medium text-center text-white sm:text-3xl" for="categories">Pick a category to see it's menu</label>
+      <form [formGroup]="stepperForm" class="flex flex-row flex-wrap justify-center w-full">
+        <ng-container *ngFor="let category of categories">
+          <app-radio name="category" [value]="category.id" required>
+            <div class="w-20 h-20 m-2 tabs" [ngClass]="{'active' : f['category'].value == category.id}">
+              <img [src]="category.img" alt="category.name">
+            </div>
+            <strong class="font-normal text-center text-white ml-7" style="font-size: 12px;">{{category.name}}</strong>
+          </app-radio>
+        </ng-container>
+      </form>
+      <div class="flex flex-row justify-center mt-4 align-middle">
+        <button [disabled]="!f['category'].value" (click)="next()" class="btn btn-primary">Next</button>
+      </div>
+    </div>
+    <div id="test-l-2" class="content">
+      <label class="flex flex-row justify-center mt-5 mb-5 text-xl font-medium text-center text-white sm:text-3xl" for="categories">Select your desired items</label>
+      <form [formGroup]="stepperForm" class="flex flex-row flex-wrap justify-center w-full">
+        <app-menu-pick>
+          <h1 class="p-1 text-center text-green-800 border-4 border-zinc-600">Chicken</h1>
+          <div sideContent1 *ngFor="let temp of temporaries">
+            <h6 class="p-1 mb-2 text-lg font-semibold text-slate-900 hover:bg-green-200">{{temp.name}}</h6>
+            <div class="flex flex-row flex-wrap">
+              <p class="w-1/2 p-1 text-sm text-slate-900">{{temp.description}}</p>
+              <span class="p-2 ml-5 font-normal text-red-800">{{temp.price}}</span>
+            </div>
+          </div>
+        </app-menu-pick>
+      </form>
+      <div class="flex flex-row justify-center mt-4 align-middle">
+        <button (click)="back()" class="mr-1 btn btn-light">Back</button>
+        <button [disabled]="!f['category'].value" (click)="next()" class="btn btn-primary">Next</button>
+      </div>
+    </div>
+    <div id="test-l-3" class="content">
+      <div class="form-group">
+        <label for="categories">Pick a category to see menu</label>
+      </div>
+      <button (click)="next()" class="btn btn-primary">Next</button>
+    </div>
+    <div id="test-l-4" class="content">
+      <div class="form-group">
+        <label for="categories">Pick a category to see menu</label>
+      </div>
+      <button (click)="next()" class="btn btn-primary">Next</button>
+    </div>
+    <div id="test-l-5" class="content">
+      <div class="form-group">
+        <label for="categories">Pick a category to see menu</label>
+      </div>
+      <button (click)="next()" class="btn btn-primary">Next</button>
+    </div>
+  </div>
+</div>
