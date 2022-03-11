@@ -1,0 +1,17 @@
+.tabs {
+  background-color: #E3FBF1;
+  margin: 0 auto;
+  border-radius: 100px;
+  justify-content: center;
+  display: flex;
+
+  img {
+    max-width: 40px;
+  }
+}
+
+.tabs.active,
+.tabs:hover {
+  border: 2px solid #F38B41;
+  cursor: pointer;
+}
