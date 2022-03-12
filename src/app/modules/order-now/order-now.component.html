@@ -67,11 +67,24 @@
       <form [formGroup]="stepperForm" class="flex flex-row flex-wrap justify-center w-full">
         <app-menu-pick>
           <h1 class="p-1 text-center text-green-800 border-4 border-zinc-600">Chicken</h1>
-          <div sideContent1 *ngFor="let temp of temporaries">
-            <h6 class="p-1 mb-2 text-lg font-semibold text-slate-900 hover:bg-green-200">{{temp.name}}</h6>
+          <div sideContent1 *ngFor="let temp of temporaries | slice:0:3; let i = index;">
+            <div class="flex flex-row justify-between">
+              <input [attr.disabled]="true" class="try" [placeholder]="temp.name" formControlName="itemName" name="iteName">
+              <input type="checkbox" class="h-6 w-6 mt-2 cursor-pointer" formControlName="category" name="category">
+            </div>
             <div class="flex flex-row flex-wrap">
-              <p class="w-1/2 p-1 text-sm text-slate-900">{{temp.description}}</p>
-              <span class="p-2 ml-5 font-normal text-red-800">{{temp.price}}</span>
+              <textarea rows="6" cols="80" disabled class="lg:w-1/2 md:w-1/2 w-full text-sm text-slate-900">{{temp.description}}</textarea>
+              <textarea cols="8" [attr.disabled]="true" class="lg:p-2 lg:ml-6 md:p-1 md:ml-5 mb-3 font-normal text-red-800 pricy" [placeholder]="temp.price" formControlName="price" name="price"></textarea>
+            </div>
+          </div>
+          <div sideContent2 *ngFor="let temp of temporaries | slice:3; let i = index;">
+            <div class="flex flex-row justify-between">
+              <input [attr.disabled]="true" class="try" [placeholder]="temp.name" formControlName="itemName" name="iteName">
+              <input type="checkbox" class="h-6 w-6 mt-2 cursor-pointer" formControlName="itemName" name="itemName">
+            </div>
+            <div class="flex flex-row flex-wrap">
+              <textarea [attr.disabled]="true" rows="6" class="lg:w-1/2 md:w-1/2 w-full text-sm text-slate-900">{{temp.description}}</textarea>
+              <textarea cols="8" [attr.disabled]="true" class="lg:p-2 lg:ml-6 md:p-1 md:ml-5 mb-3 font-normal text-red-800 pricy" [placeholder]="temp.price" formControlName="price" name="price"></textarea>
             </div>
           </div>
         </app-menu-pick>

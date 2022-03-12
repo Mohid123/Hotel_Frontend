@@ -1,56 +1,13 @@
-import { Component, forwardRef, Input } from '@angular/core';
-import { ControlContainer, FormGroupDirective, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { Order } from './../../models/order.model';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-menu-pick',
   templateUrl: './menu-pick.component.html',
-  styleUrls: ['./menu-pick.component.scss'],
-  viewProviders: [
-    {
-      provide: ControlContainer,
-      useExisting: FormGroupDirective
-    }
-  ],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => MenuPickComponent),
-      multi: true
-    }
-  ]
+  styleUrls: ['./menu-pick.component.scss']
 })
-export class MenuPickComponent implements ControlValueAccessor {
+export class MenuPickComponent implements OnInit {
 
-  @Input() name: string;
-  @Input('value') _value: any;
+  ngOnInit(): void {
 
-  get value() {
-    return this._value;
   }
-
-  set value(value) {
-    if (!!value) {
-      this._value = value;
-      this.onChange(value);
-      this.onTouched();
-    }
-  }
-
-  onChange: any = (onchanges:any) => {};
-
-  onTouched: any = () => {};
-
-  registerOnChange(fn:any) {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn:any) {
-    this.onTouched = fn;
-  }
-
-  writeValue(value:any) {
-    this._value = value;
-  }
-
 }

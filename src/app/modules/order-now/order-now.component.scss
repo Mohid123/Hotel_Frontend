@@ -15,3 +15,29 @@
   border: 2px solid #F38B41;
   cursor: pointer;
 }
+
+input[class="try"] {
+  @apply p-1 mb-2;
+  background: rgba(0,0,0,0);
+  border: none;
+}
+
+input.try::placeholder {
+  color: black;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+textarea {
+  border: none;
+  background-color: transparent;
+  resize: none;
+  outline: none;
+  overflow: hidden;
+}
+
+textarea.pricy::placeholder {
+  color: rgb(168, 0, 0);
+  font-weight: 400;
+  font-size: 15px;
+}
