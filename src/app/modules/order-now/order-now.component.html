@@ -12,22 +12,13 @@
     <div class="step" data-target="#test-l-2">
       <button class="step-trigger">
         <span class="p-1 bg-blue-700 rounded-full">
-          <img src="../../../assets/menu.svg" class="p-1 w-9 h-9 invert">
-        </span>
-        <span class="bs-stepper-label" style="color:antiquewhite">Select Item</span>
-      </button>
-    </div>
-    <div class="line" style="background-color:antiquewhite"></div>
-    <div class="step" data-target="#test-l-3">
-      <button class="step-trigger">
-        <span class="p-1 bg-blue-700 rounded-full">
           <img src="../../../assets/cash.svg" class="p-1 w-9 h-9 invert">
         </span>
         <span class="bs-stepper-label" style="color:antiquewhite">Confirm Payment</span>
       </button>
     </div>
     <div class="line" style="background-color:antiquewhite"></div>
-    <div class="step" data-target="#test-l-4">
+    <div class="step" data-target="#test-l-3">
       <button class="step-trigger">
         <span class="p-1 bg-blue-700 rounded-full">
           <img src="../../../assets/address.svg" class="p-1 w-9 h-9 invert">
@@ -36,7 +27,7 @@
       </button>
     </div>
     <div class="line" style="background-color:antiquewhite"></div>
-    <div class="step" data-target="#test-l-5">
+    <div class="step" data-target="#test-l-4">
       <button class="step-trigger">
         <span class="p-1 bg-blue-700 rounded-full">
           <img src="../../../assets/tick.svg" class="p-1 w-9 h-9 invert">
@@ -63,14 +54,10 @@
       </div>
     </div>
     <div id="test-l-2" class="content">
-      <label class="flex flex-row justify-center mt-5 mb-5 text-xl font-medium text-center text-white sm:text-3xl" for="temporaries">Select your desired items</label>
-      <form [formGroup]="stepperForm" class="flex flex-row flex-wrap justify-center w-full">
-
-      </form>
-      <div class="flex flex-row justify-center mt-4 align-middle">
-        <button (click)="back()" class="mr-1 btn btn-light">Back</button>
-        <button (click)="next()" class="btn btn-primary">Next</button>
+      <div class="form-group">
+        <label for="categories">Pick a category to see menu</label>
       </div>
+      <button (click)="next()" class="btn btn-primary">Next</button>
     </div>
     <div id="test-l-3" class="content">
       <div class="form-group">
@@ -79,12 +66,6 @@
       <button (click)="next()" class="btn btn-primary">Next</button>
     </div>
     <div id="test-l-4" class="content">
-      <div class="form-group">
-        <label for="categories">Pick a category to see menu</label>
-      </div>
-      <button (click)="next()" class="btn btn-primary">Next</button>
-    </div>
-    <div id="test-l-5" class="content">
       <div class="form-group">
         <label for="categories">Pick a category to see menu</label>
       </div>

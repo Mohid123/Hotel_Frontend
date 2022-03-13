@@ -3,7 +3,6 @@ import Stepper from 'bs-stepper';
 import { Order } from './../../models/order.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-
 @Component({
   selector: 'app-order-now',
   templateUrl: './order-now.component.html',
@@ -33,7 +32,9 @@ export class OrderNowComponent implements OnInit {
   ]
 
   stepperForm: FormGroup;
-  formValue: BehaviorSubject<any> = new BehaviorSubject({})
+  formValue: BehaviorSubject<any> = new BehaviorSubject({});
+  page: number;
+  items: any;
 
   constructor(private fb: FormBuilder) { }
 
