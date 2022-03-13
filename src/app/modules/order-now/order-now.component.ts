@@ -32,16 +32,8 @@ export class OrderNowComponent implements OnInit {
     { id: 6, name: 'Chicken KIKI', price: 'Rs. 365', description: 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', category: 'Chicken'}
   ]
 
-  public defaultStepper: Order = {
-    itemName: '',
-    price: '',
-    cardNo: '',
-    category: '',
-    address: '',
-    buyerName: '',
-    quantity: ''
-  }
   stepperForm: FormGroup;
+  formValue: BehaviorSubject<any> = new BehaviorSubject({})
 
   constructor(private fb: FormBuilder) { }
 
@@ -52,43 +44,42 @@ export class OrderNowComponent implements OnInit {
     })
 
     this.initStepperForm();
-    // this.stepperForm.get('itemName')?.setValue('')
   }
 
   initStepperForm() {
     this.stepperForm = this.fb.group({
       itemName: [
-        this.defaultStepper.itemName,
+        '',
         Validators.compose([
           Validators.required
         ])
       ],
       price: [
-        this.defaultStepper.price,
+        '',
         Validators.compose([
           Validators.required
         ])
       ],
       cardNo: [
-        this.defaultStepper.cardNo,
+        '',
         Validators.compose([
           Validators.required
         ])
       ],
       category: [
-        this.defaultStepper.category,
+        null,
         Validators.compose([
           Validators.required
         ])
       ],
       address: [
-        this.defaultStepper.address,
+        '',
         Validators.compose([
           Validators.required
         ])
       ],
       buyerName: [
-        this.defaultStepper.buyerName,
+        '',
         Validators.compose([
           Validators.required
         ])
@@ -109,6 +100,14 @@ export class OrderNowComponent implements OnInit {
   }
 
   onSubmit() {
+    const result: {
+      [key: string]: string;
+    } = {};
+    Object.keys(this.f).forEach((key) => {
+      result[key] = this.f[key].value;
+    });
+    const newModel = new Order();
+    newModel.setModel(result);
   }
 
 }

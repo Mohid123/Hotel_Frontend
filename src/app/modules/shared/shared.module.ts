@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BurgerComponent } from 'src/app/reusables/burger/burger.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { RouterModule } from '@angular/router';
-import { MenuPickComponent } from 'src/app/reusables/menu-pick/menu-pick.component';
 
 
 
 @NgModule({
-  declarations: [BurgerComponent, MenuPickComponent],
+  declarations: [BurgerComponent],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
-    BurgerComponent,
-    MenuPickComponent
+    BurgerComponent
   ]
 })
 export class SharedModule { }

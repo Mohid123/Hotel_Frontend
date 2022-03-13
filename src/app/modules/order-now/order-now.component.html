@@ -63,35 +63,13 @@
       </div>
     </div>
     <div id="test-l-2" class="content">
-      <label class="flex flex-row justify-center mt-5 mb-5 text-xl font-medium text-center text-white sm:text-3xl" for="categories">Select your desired items</label>
+      <label class="flex flex-row justify-center mt-5 mb-5 text-xl font-medium text-center text-white sm:text-3xl" for="temporaries">Select your desired items</label>
       <form [formGroup]="stepperForm" class="flex flex-row flex-wrap justify-center w-full">
-        <app-menu-pick>
-          <h1 class="p-1 text-center text-green-800 border-4 border-zinc-600">Chicken</h1>
-          <div sideContent1 *ngFor="let temp of temporaries | slice:0:3; let i = index;">
-            <div class="flex flex-row justify-between">
-              <input [attr.disabled]="true" class="try" [placeholder]="temp.name" formControlName="itemName" name="iteName">
-              <input type="checkbox" class="h-6 w-6 mt-2 cursor-pointer" formControlName="category" name="category">
-            </div>
-            <div class="flex flex-row flex-wrap">
-              <textarea rows="6" cols="80" disabled class="lg:w-1/2 md:w-1/2 w-full text-sm text-slate-900">{{temp.description}}</textarea>
-              <textarea cols="8" [attr.disabled]="true" class="lg:p-2 lg:ml-6 md:p-1 md:ml-5 mb-3 font-normal text-red-800 pricy" [placeholder]="temp.price" formControlName="price" name="price"></textarea>
-            </div>
-          </div>
-          <div sideContent2 *ngFor="let temp of temporaries | slice:3; let i = index;">
-            <div class="flex flex-row justify-between">
-              <input [attr.disabled]="true" class="try" [placeholder]="temp.name" formControlName="itemName" name="iteName">
-              <input type="checkbox" class="h-6 w-6 mt-2 cursor-pointer" formControlName="itemName" name="itemName">
-            </div>
-            <div class="flex flex-row flex-wrap">
-              <textarea [attr.disabled]="true" rows="6" class="lg:w-1/2 md:w-1/2 w-full text-sm text-slate-900">{{temp.description}}</textarea>
-              <textarea cols="8" [attr.disabled]="true" class="lg:p-2 lg:ml-6 md:p-1 md:ml-5 mb-3 font-normal text-red-800 pricy" [placeholder]="temp.price" formControlName="price" name="price"></textarea>
-            </div>
-          </div>
-        </app-menu-pick>
+
       </form>
       <div class="flex flex-row justify-center mt-4 align-middle">
         <button (click)="back()" class="mr-1 btn btn-light">Back</button>
-        <button [disabled]="!f['category'].value" (click)="next()" class="btn btn-primary">Next</button>
+        <button (click)="next()" class="btn btn-primary">Next</button>
       </div>
     </div>
     <div id="test-l-3" class="content">

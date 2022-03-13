@@ -41,3 +41,13 @@ textarea.pricy::placeholder {
   font-weight: 400;
   font-size: 15px;
 }
+
+.colorChose {
+  background-color: #CAD4BA;
+}
+
+.tabular.active,
+.tabular:hover {
+  border: 2px solid #F38B41;
+  cursor: pointer;
+}
