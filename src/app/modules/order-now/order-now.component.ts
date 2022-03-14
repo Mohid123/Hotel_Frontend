@@ -3,6 +3,7 @@ import Stepper from 'bs-stepper';
 import { Order } from './../../models/order.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+
 @Component({
   selector: 'app-order-now',
   templateUrl: './order-now.component.html',
@@ -10,33 +11,24 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class OrderNowComponent implements OnInit {
   private stepper: Stepper;
-  categories = [
-    { id:1, img: '../../../assets/chicken.svg', name:'Chicken' },
-    { id:2, img: '../../../assets/goat.svg', name:'Mutton' },
-    { id:3, img: '../../../assets/cow.svg', name:'Beef' },
+  crusts = [
+    { id:1, img: '../../../assets/pizza.svg', name:'Thin' },
+    { id:2, img: '../../../assets/pizza-original.svg', name:'Original' },
+    { id:3, img: '../../../assets/frying.svg', name:'Skillet' },
     { id:4, img: '../../../assets/grill.svg', name:'BBQ' },
-    { id:5, img: '../../../assets/drink.svg', name:'Beverages' },
-    { id:6, img: '../../../assets/vegetables-svgrepo-com.svg', name:'Sabzi' },
-    { id:7, img: '../../../assets/rice.svg', name:'Rice' },
-    { id:8, img: '../../../assets/bread.svg', name:'Tandoor' },
-    { id:9, img: '../../../assets/dessert.svg', name:'Desserts' },
+    { id:5, img: '../../../assets/castle.svg', name:'Neapolitan' },
+    { id:6, img: '../../../assets/city.svg', name:'New-Yorker' },
+    { id:7, img: '../../../assets/cracker.svg', name:'Cracker' },
+    { id:8, img: '../../../assets/bread.svg', name:'Flat Bread' },
+    { id:9, img: '../../../assets/extra.svg', name:'Extra-Filling' },
   ];
-
-  temporaries = [
-    { id: 1, name: 'Chicken Karahi', price: 'Rs. 365', description: 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', category: 'Chicken'},
-    { id: 2, name: 'Chicken Makhni', price: 'Rs. 365', description: 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', category: 'Chicken'},
-    { id: 3, name: 'Chicken Rice', price: 'Rs. 365', description: 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', category: 'Chicken'},
-    { id: 4, name: 'Chicken Dessert', price: 'Rs. 365', description: 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', category: 'Chicken'},
-    { id: 5, name: 'Chicken BBQ', price: 'Rs. 365', description: 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', category: 'Chicken'},
-    { id: 6, name: 'Chicken KIKI', price: 'Rs. 365', description: 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', category: 'Chicken'}
-  ]
 
   stepperForm: FormGroup;
   formValue: BehaviorSubject<any> = new BehaviorSubject({});
-  page: number;
-  items: any;
+  value = 0;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this.stepper = new Stepper(document.querySelector<Element | any>('#stepper1'), {
@@ -49,7 +41,7 @@ export class OrderNowComponent implements OnInit {
 
   initStepperForm() {
     this.stepperForm = this.fb.group({
-      itemName: [
+      pizzaName: [
         '',
         Validators.compose([
           Validators.required
@@ -84,6 +76,42 @@ export class OrderNowComponent implements OnInit {
         Validators.compose([
           Validators.required
         ])
+      ],
+      crust: [
+        '',
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      topping: [
+        '',
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      sauce: [
+        '',
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      meatToppings: [
+        '',
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      size: [
+        '',
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      quantity: [
+        '',
+        Validators.compose([
+          Validators.required
+        ])
       ]
     })
   }
@@ -98,6 +126,13 @@ export class OrderNowComponent implements OnInit {
 
   get f() {
     return this.stepperForm.controls;
+  }
+
+  handleMinus() {
+    this.value--;
+  }
+  handlePlus() {
+    this.value++;
   }
 
   onSubmit() {

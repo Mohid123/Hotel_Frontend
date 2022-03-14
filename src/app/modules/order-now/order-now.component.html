@@ -1,63 +1,165 @@
+<img src="../../../assets/pizza-bag.svg" class="absolute top-0 left-0 w-24 h-24 mt-28 ml-2 lg:w-40 lg:h-40 md:w-28 md:h-28">
+<img src="../../../assets/pizza-cutter.svg" class="absolute bottom-0 left-0 w-24 h-24 mb-4 ml-4 lg:w-40 lg:h-40 md:w-28 md:h-28">
+<img src="../../../assets/pizza-box.svg" class="absolute top-0 right-0 w-24 h-24 mt-24 mr-4 lg:w-40 lg:h-40 md:w-28 md:h-28">
+<img src="../../../assets/pizza-color.svg" class="absolute right-0 bottom-2 w-24 h-24 mb-4 mr-4 lg:w-40 lg:h-40 md:w-28 md:h-28">
 <div id="stepper1" class="bs-stepper">
   <div class="bs-stepper-header">
     <div class="step" data-target="#test-l-1">
       <button class="step-trigger">
-        <span class="p-1 bg-blue-700 rounded-full">
-          <img src="../../../assets/category.svg" class="p-1 w-9 h-9 invert">
+        <span class="p-2 bg-amber-600 rounded-full">
+          <img src="../../../assets/category.svg" class="w-9 h-9 invert">
         </span>
-        <span class="bs-stepper-label" style="color:antiquewhite">Select Category</span>
+        <span class="bs-stepper-label" style="color:antiquewhite; margin-left: 10px;">Choose a Crust Type</span>
       </button>
     </div>
     <div class="line" style="background-color:antiquewhite"></div>
     <div class="step" data-target="#test-l-2">
       <button class="step-trigger">
-        <span class="p-1 bg-blue-700 rounded-full">
-          <img src="../../../assets/cash.svg" class="p-1 w-9 h-9 invert">
+        <span class="p-2 bg-emerald-700 rounded-full">
+          <img src="../../../assets/pizza-main.svg" class="w-9 h-9 invert">
         </span>
-        <span class="bs-stepper-label" style="color:antiquewhite">Confirm Payment</span>
+        <span class="bs-stepper-label" style="color:antiquewhite; margin-left: 10px;">Create your Pizza</span>
       </button>
     </div>
     <div class="line" style="background-color:antiquewhite"></div>
     <div class="step" data-target="#test-l-3">
       <button class="step-trigger">
-        <span class="p-1 bg-blue-700 rounded-full">
-          <img src="../../../assets/address.svg" class="p-1 w-9 h-9 invert">
+        <span class="p-2 bg-violet-500 rounded-full">
+          <img src="../../../assets/cash.svg" class="w-9 h-9 invert">
         </span>
-        <span class="bs-stepper-label" style="color:antiquewhite">Confirm Details</span>
+        <span class="bs-stepper-label" style="color:antiquewhite; margin-left: 10px;">Confirm Details</span>
       </button>
     </div>
     <div class="line" style="background-color:antiquewhite"></div>
     <div class="step" data-target="#test-l-4">
       <button class="step-trigger">
-        <span class="p-1 bg-blue-700 rounded-full">
-          <img src="../../../assets/tick.svg" class="p-1 w-9 h-9 invert">
+        <span class="p-2 bg-fuchsia-500 rounded-full">
+          <img src="../../../assets/tick.svg" class="w-9 h-9 invert">
         </span>
-        <span class="bs-stepper-label" style="color:antiquewhite">Submit</span>
+        <span class="bs-stepper-label" style="color:antiquewhite; margin-left: 10px;">Place Order</span>
       </button>
     </div>
   </div>
   <div class="bs-stepper-content">
     <div id="test-l-1" class="content">
-      <label class="flex flex-row justify-center mt-5 mb-5 text-xl font-medium text-center text-white sm:text-3xl" for="categories">Pick a category to see it's menu</label>
+      <label class="flex flex-row justify-center mt-5 mb-5 text-xl font-medium text-center text-white sm:text-3xl" for="categories">Pick a crust to get started</label>
       <form [formGroup]="stepperForm" class="flex flex-row flex-wrap justify-center w-full">
-        <ng-container *ngFor="let category of categories">
-          <app-radio name="category" [value]="category.id" required>
-            <div class="w-20 h-20 m-2 tabs" [ngClass]="{'active' : f['category'].value == category.id}">
-              <img [src]="category.img" alt="category.name">
+        <ng-container *ngFor="let crust of crusts">
+          <app-radio name="crust" [value]="crust.name" required>
+            <div class="w-20 h-20 m-2 tabs" [ngClass]="{'active' : f['crust'].value == crust.name}">
+              <img [src]="crust.img" alt="crust.name">
             </div>
-            <strong class="font-normal text-center text-white ml-7" style="font-size: 12px;">{{category.name}}</strong>
+            <strong class="font-normal text-center text-white ml-7" style="font-size: 12px;">{{crust.name}}</strong>
           </app-radio>
         </ng-container>
       </form>
       <div class="flex flex-row justify-center mt-4 align-middle">
-        <button [disabled]="!f['category'].value" (click)="next()" class="btn btn-primary">Next</button>
+        <button [disabled]="!f['crust'].value" (click)="next()" class="btn btn-primary">Next</button>
       </div>
     </div>
     <div id="test-l-2" class="content">
-      <div class="form-group">
-        <label for="categories">Pick a category to see menu</label>
+      <form [formGroup]="stepperForm" class="flex flex-col flex-wrap justify-center items-center w-full h-full mt-48">
+        <div class="flex items-center border-b border-teal-500 py-2 mb-5">
+          <input formControlName="pizzaName" name="pizzaName" class="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Give Your Pizza a name!">
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-2 justify-center align-middle">
+          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 mt-2">
+            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-state">
+              Sauce
+            </label>
+            <div class="relative">
+              <select formControlName="sauce" name="sauce" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                <option>Traditional</option>
+                <option>Alfredo</option>
+                <option>Garlic Butter</option>
+                <option>BBQ</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 mt-2">
+            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-state">
+              Meat Toppings
+            </label>
+            <div class="relative">
+              <select formControlName="meatToppings" name="meatToppings" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                <option>Beef</option>
+                <option>Canadian</option>
+                <option>Italian Sausage</option>
+                <option>Pepperoni</option>
+                <option>Chicken</option>
+                <option>Meatballs</option>
+                <option>BBQ</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 mt-2">
+            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-state">
+              Other Toppings
+            </label>
+            <div class="relative">
+              <select formControlName="topping" name="topping" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                <option>Black Olives</option>
+                <option>Green Olives</option>
+                <option>Mushrooms</option>
+                <option>Onions</option>
+                <option>Tomatoes</option>
+                <option>Pickles</option>
+                <option>Mixed</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 mt-2">
+            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-state">
+              Size
+            </label>
+            <div class="relative">
+              <select formControlName="size" name="size" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                <option>Extra Small (8-10")</option>
+                <option>Small (12")</option>
+                <option>Medium (14")</option>
+                <option>Large (16")</option>
+                <option>Extra Large (18")</option>
+                <option>Party (22")</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 mt-2">
+            <label class="block uppercase tracking-wide text-white text-xs font-bold mb-2" for="grid-state">
+              Quantity
+            </label>
+            <div class="relative">
+              <div class="border-2 border-white h-14 w-full rounded-sm flex">
+                <button class="h-full w-16 bg-white text-purple-800 font-bold border-r-2 border-purple-400 text-3xl" (click)="handleMinus()">-</button>
+                <input type="number" class="text-center w-full" value="0" [(ngModel)]="value" formControlName="quantity" name="quantity">
+                <button class="h-full w-16 bg-white text-purple-800 font-bold border-l-2 border-purple-400 text-3xl" (click)="handlePlus()">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="flex flex-row justify-center mt-4 align-middle">
+        <button (click)="back()" class="btn btn-light mr-2">Back</button>
+        <button
+        [disabled]="!f['pizzaName'].value ||
+        !f['quantity'].value ||
+        !f['sauce'].value ||
+        !f['topping'].value ||
+        !f['meatToppings'].value"
+        (click)="next()"
+        class="btn btn-primary">Next</button>
       </div>
-      <button (click)="next()" class="btn btn-primary">Next</button>
     </div>
     <div id="test-l-3" class="content">
       <div class="form-group">
@@ -70,6 +172,40 @@
         <label for="categories">Pick a category to see menu</label>
       </div>
       <button (click)="next()" class="btn btn-primary">Next</button>
+    </div>
+    <div class="main-container">
+      <div class="flex flex-col justify-center rounded-md z-50 mt-10" style="background-image: url('../../../assets/pizza-bg.jpg');">
+        <div class="flex flex-col justify-center">
+          <p class="text-white text-lg font-bold text-center">-Create Your Own-</p>
+          <h1 class="text-white font-bold text-center text-7xl fonting">Pizza</h1>
+        </div>
+        <div class="flex lg:flex-row flex-col lg:justify-evenly justify-center w-full mt-4 p-2">
+          <div class="p-5 border-2 border-white flex flex-col">
+            <span class="text-white font-thin text-sm text-center p-1">Crust:</span>
+            <span class="text-white font-semibold text-base text-center p-2">{{this.stepperForm.controls['crust'].value}}</span>
+          </div>
+          <div class="p-5 border-2 border-white flex flex-col">
+            <span class="text-white font-thin text-sm text-center p-1">Size:</span>
+            <span class="text-white font-semibold text-base text-center p-2">{{this.stepperForm.controls['size'].value}}</span>
+          </div>
+          <div class="p-5 border-2 border-white flex flex-col">
+            <span class="text-white font-thin text-sm text-center p-1">Sauce:</span>
+            <span class="text-white font-semibold text-base text-center p-2">{{this.stepperForm.controls['sauce'].value}}</span>
+          </div>
+        </div>
+        <p class="p-3 mt-2 text-center font-semibold text-3xl text-white">TOPPINGS</p>
+        <div class="flex lg:flex-row flex-col lg:justify-evenly justify-center mt-4 p-2">
+          <div class="p-5 border-2 border-white flex flex-col">
+            <span class="text-white font-thin text-sm text-center p-1">Meat Toppings:</span>
+            <span class="text-white font-semibold text-base text-center p-2">{{this.stepperForm.controls['meatToppings'].value}}</span>
+          </div>
+          <div class="p-5 border-2 border-white flex flex-col">
+            <span class="text-white font-thin text-sm text-center p-1">Other Toppings:</span>
+            <span class="text-white font-semibold text-base text-center p-2">{{this.stepperForm.controls['topping'].value}}</span>
+          </div>
+        </div>
+        <h4 class="text-white mb-3 mt-3 text-center border-2 border-white p-2">Pizza Name: {{this.stepperForm.controls['pizzaName'].value}}</h4>
+      </div>
     </div>
   </div>
 </div>
