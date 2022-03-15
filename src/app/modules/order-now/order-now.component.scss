@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600&display=swap');
 
 .tabs {
   background-color: #E3FBF1;
@@ -39,4 +40,25 @@ input[type=number]::-webkit-outer-spin-button {
     @apply lg:px-10;
     max-width: 1280px;
     min-width: 340px;
+    width: 800px;
+  }
+
+  .fonter {
+    @apply text-white absolute top-36 left-6 text-2xl;
+    font-family: 'Source Code Pro', monospace;
+  }
+
+  .fontering {
+    @apply text-white absolute top-10 left-6 text-2xl;
+    font-family: 'Source Code Pro', monospace;
+  }
+
+  .naming {
+    @apply text-white absolute top-48 left-6 text-sm;
+    font-family: 'Source Code Pro', monospace;
+  }
+
+  .expired {
+    @apply text-white absolute top-56 left-6 text-xs;
+    font-family: 'Source Code Pro', monospace;
   }

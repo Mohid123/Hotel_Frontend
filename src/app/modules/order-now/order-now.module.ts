@@ -6,19 +6,26 @@ import { OrderNowComponent } from './order-now.component';
 import { RadioComponent } from 'src/app/reusables/radio/radio.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import {NgxMaskModule} from 'ngx-mask';
+import { SpaceDirective } from 'src/app/directives/space.directive';
 
 
 @NgModule({
   declarations: [
     OrderNowComponent,
-    RadioComponent
+    RadioComponent,
+    SpaceDirective
   ],
   imports: [
     CommonModule,
     OrderNowRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    NgxMaskModule.forRoot({
+      showMaskTyped : true,
+      // clearIfNotMatch : true
+    })
   ]
 })
 export class OrderNowModule { }

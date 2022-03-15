@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import Stepper from 'bs-stepper';
 import { Order } from './../../models/order.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -26,6 +26,7 @@ export class OrderNowComponent implements OnInit {
   stepperForm: FormGroup;
   formValue: BehaviorSubject<any> = new BehaviorSubject({});
   value = 0;
+
 
   constructor(private fb: FormBuilder) {
   }
@@ -112,6 +113,18 @@ export class OrderNowComponent implements OnInit {
         Validators.compose([
           Validators.required
         ])
+      ],
+      cashPayment: [
+        '',
+        Validators.compose([
+          Validators.required
+        ])
+      ],
+      expiryDate: [
+        '',
+        Validators.compose([
+          Validators.required
+        ])
       ]
     })
   }
@@ -128,9 +141,26 @@ export class OrderNowComponent implements OnInit {
     return this.stepperForm.controls;
   }
 
+  disableCheckBox() {
+    const checkA = document.querySelector<Element | any>('#specialCheck');
+    const checkB = document.querySelector<Element | any>('#specialChecked');
+
+    if(checkA.checked == true) {
+      checkB.disabled = true;
+    }
+    else if(checkB.checked == true) {
+      checkA.disabled = true;
+    }
+    else if(checkA.checked == false || checkB.checked == false) {
+      checkA.disabled = false;
+      checkB.disabled = false
+    }
+  }
+
   handleMinus() {
     this.value--;
   }
+
   handlePlus() {
     this.value++;
   }

@@ -11,6 +11,8 @@ export class Order {
   meatToppings?: string;
   pizzaName?: string;
   size?: string;
+  cashPayment?: string;
+  expiryDate?: string
 
   setModel(_model: unknown) {
     const model = _model as Order;
@@ -24,5 +26,7 @@ export class Order {
     this.meatToppings = model.meatToppings || '';
     this.pizzaName = model.pizzaName || '';
     this.size = model.size || '';
+    this.cashPayment = model.cashPayment || '';
+    this.expiryDate = model.expiryDate || '';
   }
 }
