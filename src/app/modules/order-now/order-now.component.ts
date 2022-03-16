@@ -26,6 +26,15 @@ export class OrderNowComponent implements OnInit {
   stepperForm: FormGroup;
   formValue: BehaviorSubject<any> = new BehaviorSubject({});
   value = 0;
+  prices = [
+    { size: 'Extra Small (8-10")', price: 250 },
+    { size: 'Small (12")', price: 400 },
+    { size: 'Medium (14")', price: 650 },
+    { size: 'Large (16")', price: 850 },
+    { size: 'Extra Large (18")', price: 1250 },
+    { size: 'Party (22")', price: 1700 },
+  ]
+  lastPage: boolean = false;
 
 
   constructor(private fb: FormBuilder) {
@@ -42,12 +51,6 @@ export class OrderNowComponent implements OnInit {
 
   initStepperForm() {
     this.stepperForm = this.fb.group({
-      pizzaName: [
-        '',
-        Validators.compose([
-          Validators.required
-        ])
-      ],
       price: [
         '',
         Validators.compose([
@@ -125,11 +128,17 @@ export class OrderNowComponent implements OnInit {
         Validators.compose([
           Validators.required
         ])
-      ]
+      ],
+      checkBox: [ false ]
     })
   }
 
   next() {
+    this.stepper.next();
+  }
+
+  lastNext() {
+    this.lastPage = true;
     this.stepper.next();
   }
 
@@ -166,6 +175,7 @@ export class OrderNowComponent implements OnInit {
   }
 
   onSubmit() {
+    debugger
     const result: {
       [key: string]: string;
     } = {};

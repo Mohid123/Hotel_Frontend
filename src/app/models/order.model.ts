@@ -9,7 +9,6 @@ export class Order {
   topping?: string;
   sauce?: string;
   meatToppings?: string;
-  pizzaName?: string;
   size?: string;
   cashPayment?: string;
   expiryDate?: string
@@ -24,7 +23,6 @@ export class Order {
     this.topping = model.topping || '';
     this.sauce = model.sauce || '';
     this.meatToppings = model.meatToppings || '';
-    this.pizzaName = model.pizzaName || '';
     this.size = model.size || '';
     this.cashPayment = model.cashPayment || '';
     this.expiryDate = model.expiryDate || '';

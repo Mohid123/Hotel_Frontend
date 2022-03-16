@@ -1,8 +1,8 @@
 <!-- <img src="../../../assets/pizza-bag.svg" class="absolute top-0 left-0 w-24 h-24 ml-2 mt-28 lg:w-40 lg:h-40 md:w-28 md:h-28">
 <img src="../../../assets/pizza-cutter.svg" class="absolute left-0 w-24 h-24 mb-4 ml-4 -bottom-9 lg:w-40 lg:h-40 md:w-28 md:h-28">
-<img src="../../../assets/pizza-box.svg" class="absolute top-0 right-0 w-24 h-24 mt-24 mr-4 lg:w-40 lg:h-40 md:w-28 md:h-28">
-<img src="../../../assets/pizza-color.svg" class="absolute right-0 w-24 h-24 mb-4 mr-4 -bottom-9 lg:w-40 lg:h-40 md:w-28 md:h-28"> -->
-<div id="stepper1" class="bs-stepper">
+<img src="../../../assets/pizza-box.svg" class="absolute top-0 right-0 w-24 h-24 mt-24 mr-4 lg:w-40 lg:h-40 md:w-28 md:h-28"> -->
+<app-burger></app-burger>
+<div id="stepper1" class="mt-16 bs-stepper">
   <div class="bs-stepper-header">
     <div class="step" data-target="#test-l-1">
       <button class="step-trigger">
@@ -60,9 +60,6 @@
     <div id="test-l-2" class="content">
       <label class="flex flex-row justify-center mt-5 mb-5 text-xl font-medium text-center text-white sm:text-3xl" for="categories">Customize your pizza</label>
       <form [formGroup]="stepperForm" class="flex flex-col flex-wrap items-center justify-center w-full h-full mt-9">
-        <div class="flex items-center py-2 mb-5 border-b border-teal-500">
-          <input formControlName="pizzaName" name="pizzaName" class="w-full px-2 py-1 mr-3 leading-tight text-white bg-transparent border-none appearance-none focus:outline-none" type="text" placeholder="Give Your Pizza a name!">
-        </div>
         <div class="flex flex-wrap justify-center mb-2 -mx-3 align-middle">
           <div class="w-full px-3 mt-2 mb-6 md:w-1/3 md:mb-0">
             <label class="block mb-2 text-xs font-bold tracking-wide text-white uppercase" for="grid-state">
@@ -124,12 +121,7 @@
             </label>
             <div class="relative">
               <select formControlName="size" name="size" class="block w-full px-4 py-3 pr-8 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                <option>Extra Small (8-10")</option>
-                <option>Small (12")</option>
-                <option>Medium (14")</option>
-                <option>Large (16")</option>
-                <option>Extra Large (18")</option>
-                <option>Party (22")</option>
+                <option *ngFor="let option of prices; let i = index" [ngValue]="option.size">{{option.size}}</option>
               </select>
               <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
                 <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -150,7 +142,7 @@
           </div>
         </div>
       </form>
-      <!-- [disabled]="!f['pizzaName'].value ||
+      <!-- [disabled]="
         !f['quantity'].value ||
         !f['sauce'].value ||
         !f['topping'].value ||
@@ -200,40 +192,42 @@
             </div>
             <div class="items-center justify-center mb-6 md:flex md:items-center">
               <div class="flex flex-row justify-center">
-                <input id="specialChecked" type="checkbox" class="w-6 h-6 px-4 py-2 leading-tight rounded" (click)="disableCheckBox()">
+                <input id="specialChecked" type="checkbox" class="w-6 h-6 px-4 py-2 leading-tight rounded" (click)="disableCheckBox()" formControlName="checkBox">
                 <label class="block pr-5 mb-1 ml-2 font-bold text-gray-200 md:text-right md:mb-0" for="inline-full-name">
                   Online Payment
                 </label>
               </div>
             </div>
-            <div class="flex flex-col items-center justify-center mb-6 md:flex md:items-center">
+            <div *ngIf="this.stepperForm.controls['checkBox'].value == true" class="flex flex-row justify-evenly md:items-center">
               <div class="relative mt-3 text-center text-white w-96">
                 <span class="fontering">Bank Name</span>
                 <img src="../../../assets/card-gold.png" class="w-full rounded-lg">
-                <img src="../../../assets/chip-removebg-preview.png" class="absolute z-50 w-16 h-12 top-24 left-4">
+                <img src="../../../assets/chip-removebg-preview.png" class="absolute z-50 w-16 h-12 top-16 left-4">
                 <img src="../../../assets/mc.png" class="absolute w-16 h-9 bottom-9 right-6">
-                <span class="fonter">{{this.stepperForm.controls['cardNo'].value}}</span>
-                <span class="naming">Name: {{this.stepperForm.controls['buyerName'].value}}</span>
-                <span class="expired">Expiry: {{this.stepperForm.controls['expiryDate'].value}}</span>
+                <span class="fonter">{{this.stepperForm.controls['cardNo'].value | mask: '0000-0000-0000-0000'}}</span>
+                <span class="naming">Name: {{this.stepperForm.controls['buyerName'].value | truncate: 15 : true }}</span>
+                <span class="expired">Expiry: {{this.stepperForm.controls['expiryDate'].value | mask: '00/00'}}</span>
               </div>
-              <div class="items-center justify-center mt-3 mb-6 md:flex md:items-center">
-                <div class="md:w-1/3">
-                  <label class="block pr-4 mb-1 font-bold text-gray-200 md:text-right md:mb-0" for="inline-full-name">
-                    Card Number
-                  </label>
+              <div class="flex flex-col">
+                <div class="items-center mt-3 mb-6 justify-evenly md:flex md:items-center">
+                  <div class="md:w-4/6">
+                    <label class="block pl-2 pr-4 mb-1 font-bold text-gray-200 md:text-right md:mb-0" for="inline-full-name">
+                      Card Number
+                    </label>
+                  </div>
+                  <div class="w-full">
+                    <input class="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text" formControlName="cardNo" name="cardNo" mask="0000-0000-0000-0000">
+                  </div>
                 </div>
-                <div class="md:w-2/3">
-                  <input class="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text" appSpace formControlName="cardNo" name="cardNo">
-                </div>
-              </div>
-              <div class="items-center justify-center mt-3 mb-6 md:flex md:items-center">
-                <div class="md:w-1/3">
-                  <label class="block pr-4 mb-1 font-bold text-gray-200 md:text-right md:mb-0" for="inline-full-name">
-                    Expiry Date
-                  </label>
-                </div>
-                <div class="md:w-2/3">
-                  <input class="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text" mask="00/00" formControlName="expiryDate" name="expiryDate">
+                <div class="items-center mt-3 justify-evenly md:flex md:items-center">
+                  <div class="w-full">
+                    <label class="block pr-4 mb-1 font-bold text-gray-200 md:text-right md:mb-0" for="inline-full-name">
+                      Expiry Date
+                    </label>
+                  </div>
+                  <div class="w-full">
+                    <input class="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text" mask="00/00" formControlName="expiryDate" name="expiryDate">
+                  </div>
                 </div>
               </div>
             </div>
@@ -243,18 +237,19 @@
       <div class="flex flex-row justify-center mt-4 align-middle">
         <button (click)="back()" class="mr-2 btn btn-light">Back</button>
         <button
-        (click)="next()"
+        (click)="lastNext()"
         class="btn btn-primary">Next</button>
       </div>
     </div>
     <div id="test-l-4" class="content">
-      <div class="form-group">
-        <label for="categories">Pick a category to see menu</label>
+      <div class="flex flex-col items-center justify-center">
+        <label class="flex flex-row justify-center mt-20 mb-5 text-xl font-medium text-center text-white sm:text-5xl fonting">Success!</label>
+        <label class="flex flex-row justify-center mb-5 text-xl font-medium text-center text-white mt-14 sm:text-xl">Your Pizza will be ready and delivered shortly</label>
+        <img src="../../../assets/pizza-box.svg" class="absolute mb-4 mr-4 top-2/4 left-4/6 w-28 h-28 lg:w-44 lg:h-44 md:w-36 md:h-36 animate-spin">
       </div>
-      <button (click)="next()" class="btn btn-primary">Next</button>
     </div>
-    <div class="main-container">
-      <div class="z-50 flex flex-col justify-center mt-8 rounded-md" style="background-image: url('../../../assets/pizza-bg.jpg');">
+    <div [hidden]="lastPage == true" class="main-container">
+      <div class="flex flex-col justify-center mt-8 rounded-md" style="background-image: url('../../../assets/pizza-bg.jpg');">
         <div class="flex flex-col justify-center">
           <p class="text-xl font-thin text-center text-white">-Create Your Own-</p>
           <h1 class="text-5xl font-bold text-center text-white fonting">Pizza</h1>
@@ -284,7 +279,11 @@
             <span class="p-2 text-base font-semibold text-center text-white">{{this.stepperForm.controls['topping'].value}}</span>
           </div>
         </div>
-        <h4 class="p-2 mt-3 mb-3 text-center text-white border-2 border-white">Pizza Name: {{this.stepperForm.controls['pizzaName'].value}}</h4>
+        <ng-container *ngFor="let price of prices; let i = index;">
+          <ng-container *ngIf="price.size == this.stepperForm.controls['size'].value">
+            <p class="p-1 mt-2 text-lg font-semibold text-center text-white">Price: Rs.{{this.stepperForm.controls['quantity'].value * price.price}}</p>
+          </ng-container>
+        </ng-container>
       </div>
     </div>
   </div>

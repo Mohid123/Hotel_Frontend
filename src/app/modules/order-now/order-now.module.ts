@@ -8,13 +8,15 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import {NgxMaskModule} from 'ngx-mask';
 import { SpaceDirective } from 'src/app/directives/space.directive';
+import { TruncatePipe } from 'src/app/pipes/truncate.pipe';
 
 
 @NgModule({
   declarations: [
     OrderNowComponent,
     RadioComponent,
-    SpaceDirective
+    SpaceDirective,
+    TruncatePipe
   ],
   imports: [
     CommonModule,

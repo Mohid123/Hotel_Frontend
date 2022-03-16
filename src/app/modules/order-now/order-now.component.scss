@@ -44,21 +44,22 @@ input[type=number]::-webkit-outer-spin-button {
   }
 
   .fonter {
-    @apply text-white absolute top-36 left-6 text-2xl;
+    @apply text-white absolute top-28 left-6 text-2xl;
     font-family: 'Source Code Pro', monospace;
   }
 
   .fontering {
-    @apply text-white absolute top-10 left-6 text-2xl;
+    @apply text-white absolute top-8 left-6 text-2xl;
     font-family: 'Source Code Pro', monospace;
   }
 
   .naming {
-    @apply text-white absolute top-48 left-6 text-sm;
+    @apply text-white absolute top-40 left-6 text-sm;
     font-family: 'Source Code Pro', monospace;
   }
 
   .expired {
-    @apply text-white absolute top-56 left-6 text-xs;
+    @apply text-white absolute top-48 left-6 text-xs;
     font-family: 'Source Code Pro', monospace;
   }
+
