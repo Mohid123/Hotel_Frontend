@@ -5,9 +5,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TruncatePipe implements PipeTransform {
 
-  transform(value: string, maxLength: number, showEllipsis: boolean) {
-    const newValue = maxLength ? value.substr(0, maxLength): value;
-    return showEllipsis ? `${newValue}...`: newValue
+  transform(value: string, maxLength: number) {
+    if(value.length > 10) {
+      return value.substring(0, maxLength) + '...';
+    }
+    else {
+      return value;
+    }
+
   }
 
 }
