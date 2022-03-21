@@ -205,7 +205,7 @@
                 <img src="../../../assets/chip-removebg-preview.png" class="absolute z-50 w-16 h-12 top-16 left-4">
                 <img src="../../../assets/mc.png" class="absolute w-16 h-9 bottom-9 right-6">
                 <span class="fonter">{{this.stepperForm.controls['cardNo'].value | mask: '0000-0000-0000-0000'}}</span>
-                <span class="naming">Name: {{this.stepperForm.controls['buyerName'].value | truncate: 15 : true }}</span>
+                <span class="naming">Name: {{this.stepperForm.controls['buyerName'].value | truncate: 9 }}</span>
                 <span class="expired">Expiry: {{this.stepperForm.controls['expiryDate'].value | mask: '00/00'}}</span>
               </div>
               <div class="flex flex-col">
