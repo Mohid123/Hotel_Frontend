@@ -63,12 +63,6 @@ export class OrderNowComponent implements OnInit {
           Validators.required
         ])
       ],
-      category: [
-        null,
-        Validators.compose([
-          Validators.required
-        ])
-      ],
       address: [
         '',
         Validators.compose([

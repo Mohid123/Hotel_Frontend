@@ -142,18 +142,18 @@
           </div>
         </div>
       </form>
-      <!-- [disabled]="
-        !f['quantity'].value ||
-        !f['sauce'].value ||
-        !f['topping'].value ||
-        !f['meatToppings'].value ||
-        !f['size'].value" -->
       <div class="flex flex-row justify-center mt-4 align-middle">
         <button (click)="back()" class="mr-2 btn btn-light">Back</button>
         <button
-
-        (click)="next()"
-        class="btn btn-primary">Next</button>
+          [disabled]="
+          !f['quantity'].value ||
+          !f['sauce'].value ||
+          !f['topping'].value ||
+          !f['meatToppings'].value ||
+          !f['size'].value"
+          (click)="next()"
+          class="btn btn-primary">Next
+        </button>
       </div>
     </div>
     <div id="test-l-3" class="content">
@@ -246,6 +246,14 @@
         <label class="flex flex-row justify-center mt-20 mb-5 text-xl font-medium text-center text-white sm:text-5xl fonting">Success!</label>
         <label class="flex flex-row justify-center mb-5 text-xl font-medium text-center text-white mt-14 sm:text-xl">Your Pizza will be ready and delivered shortly</label>
         <img src="../../../assets/pizza-box.svg" class="absolute mb-4 mr-4 top-2/4 left-4/6 w-28 h-28 lg:w-44 lg:h-44 md:w-36 md:h-36 animate-spin">
+        <form [formGroup]="stepperForm">
+          <div class="flex flex-row justify-center align-middle mt-44">
+            <button (click)="back()" class="mr-2 btn btn-light">Back</button>
+            <button
+            (click)="onSubmit()"
+            class="btn btn-primary">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
     <div [hidden]="lastPage == true" class="main-container">
