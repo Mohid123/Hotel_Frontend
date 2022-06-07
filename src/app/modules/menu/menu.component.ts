@@ -188,13 +188,13 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   onScrollDown() {
     this.menuService.getAllItems(++this.page).pipe(map((res: ApiResponse<MenuList>) => {
-      if(res.data?.totalCount/this.menuService.limit >= this.page) {
+      if(res.data?.totalCount >= this.page * this.menuService.limit) {
         this.finished = false;
         const currentData = this.getAllItems$.value;
         const latestData = [...currentData, ...res.data?.data];
         this.getAllItems$.next(latestData);
       }
-      else if(res.data?.totalCount/this.menuService.limit <= this.page) {
+      else if(res.data?.totalCount <= this.page * this.menuService.limit) {
         this.finished = true;
       }
     })).subscribe();
