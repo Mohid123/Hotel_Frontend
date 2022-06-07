@@ -11,7 +11,7 @@ type menu = MenuList;
   providedIn: 'root'
 })
 export class MenuService extends BaseApiService<menu>{
-  limit: number = 8;
+  public limit: number = 8;
 
   private getAllItems$ = new BehaviorSubject<Array<any>>([]);
   public menu$: Observable<Array<any>> = this.getAllItems$.asObservable();

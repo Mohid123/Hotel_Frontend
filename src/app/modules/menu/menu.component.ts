@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { Menu } from 'src/app/models/menu.model';
 import { ApiResponse } from 'src/app/models/response.model';
 import { MenuService } from 'src/app/services/menu.service';
-import { Observable, BehaviorSubject, fromEvent, exhaustMap, tap, delay } from 'rxjs';
+import { Observable, BehaviorSubject, fromEvent, exhaustMap, tap, delay, map } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ModalConfig } from 'src/app/models/modal.config';
@@ -167,7 +167,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   getMenu(page: number) {
     this.showItems = false;
-    this.menuService.getAllItems(page).pipe(delay(3000), tap((res: ApiResponse<MenuList>) => {
+    this.menuService.getAllItems(page).pipe(delay(1000), tap((res: ApiResponse<MenuList>) => {
       this.getAllItems$.next(res.data?.data)
     })).subscribe(() => {
       this.showItems = true;
@@ -187,13 +187,14 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   onScrollDown() {
-    this.finished = false;
-    this.menuService.getAllItems(++this.page).pipe(delay(2000), tap((res: ApiResponse<MenuList>) => {
-      const currentData = this.getAllItems$.value;
-      const latestData = [...currentData, ...res.data?.data];
-      this.getAllItems$.next(latestData);
-      const lastItem = latestData[latestData.length - 1]
-      if(lastItem) {
+    this.menuService.getAllItems(++this.page).pipe(map((res: ApiResponse<MenuList>) => {
+      if(res.data?.totalCount >= this.page * this.menuService.limit) {
+        this.finished = false;
+        const currentData = this.getAllItems$.value;
+        const latestData = [...currentData, ...res.data?.data];
+        this.getAllItems$.next(latestData);
+      }
+      else if(res.data?.totalCount <= this.page * this.menuService.limit) {
         this.finished = true;
       }
     })).subscribe();

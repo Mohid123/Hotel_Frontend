@@ -46,7 +46,7 @@
 </ng-container>
 
 <!--infinite Scroll-->
-<div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500" (scrolled)="onScrollDown()" [infiniteScrollDisabled]="finished"></div>
+<div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500" (scrolled)="onScrollDown()"></div>
 <ng-container *ngIf="finished == false">
   <app-skeleton-load class="flex flex-row flex-wrap justify-center pb-8 align-middle"></app-skeleton-load>
 </ng-container>
